@@ -16,10 +16,12 @@ public class KontrakSewa {
     }
 
     public void aktifkan() {
-
+        this.status = "Aktif";
+        System.out.println("Kontrak sewa denganID " + idKontrak + "Telah di aktifkan");
     }
 
     public void selesai() {
-        
+        this.status = "Selesai";
+        System.out.println("Kontrak sewa denganID " + idKontrak + "Telah selesai");
     }
 }
