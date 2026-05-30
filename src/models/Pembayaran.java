@@ -16,7 +16,7 @@ public class Pembayaran {
     }
 
     public void konfirmasi() {
-
+        
     }
 
     public void cetakStruk() {

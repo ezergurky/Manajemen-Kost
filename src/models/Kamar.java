@@ -32,7 +32,6 @@ public class Kamar {
     }
 
     public void updateStatus(boolean terisi) {
-
         if (terisi) {
             this.status = "Terisi";
         } else {
