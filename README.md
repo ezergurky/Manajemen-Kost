@@ -23,7 +23,7 @@ Project ini dikembangkan sebagai tugas besar mata kuliah Desain dan Pemrograman 
 ## Teknologi yang Digunakan
 
 - Java
-- JavaFX
+- Swing
 - MySQL
 - JDBC
 - Visual Studio Code
