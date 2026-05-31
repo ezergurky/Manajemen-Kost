@@ -23,15 +23,16 @@ public abstract class User {
     }
 
     public boolean login() {
+        statusAkun = "Online";
         return true;
     }
 
     public void logout() {
-        
+        statusAkun = "Offline";
     }
 
     protected boolean validasiSesi() {
-        return true;
+        return statusAkun.equals("Online");
     }
 
     public abstract void displayDashboard();

@@ -8,16 +8,24 @@ public class Admin extends User {
         this.level = level;
     }
 
-    public void kelolaKamar() {
+    public String getLevel() {
+        return level;
+    }
 
+    public void kelolaKamar() {
+        System.out.println("Mengelola data kamar...");
     }
 
     public void kelolaPenghuni() {
+        System.out.println("Mengelola data penghuni...");
+    }
 
+    public void generateLaporan() {
+        System.out.println("Membuat laporan keuangan...");
     }
 
     @Override
     public void displayDashboard() {
-        
+        System.out.println("Dashboard Admin");
     }
 }

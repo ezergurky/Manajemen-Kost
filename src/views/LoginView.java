@@ -28,8 +28,8 @@ public class LoginView extends JFrame {
         setMinimumSize(new Dimension(900, 580));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
         initComponents();
+        new controllers.LoginController(this);
         setVisible(true);
     }
 
@@ -216,7 +216,7 @@ public class LoginView extends JFrame {
         JLabel lbl = new JLabel(text);
         lbl.setFont(new Font("Segoe UI", Font.BOLD, 12));
         lbl.setForeground(TEXT_MED);
-        return lbl;
+        return lbl; 
     }
 
     private void setupField(JTextField field, String placeholder) {
@@ -308,7 +308,9 @@ public class LoginView extends JFrame {
         }
     }
 
-    public JButton getBtnLogin() { return btnLogin; }
+    public JButton getBtnLogin() { 
+        return btnLogin;
+    }
 
     public String getEmail() {
         String t = txtEmail.getText();
@@ -331,12 +333,10 @@ public class LoginView extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2.setPaint(new GradientPaint(0, 0, c1, 0, getHeight(), c2));
             g2.fillRect(0, 0, getWidth(), getHeight());
-            // Decorative circles
             g2.setColor(new Color(255, 255, 255, 22));
             g2.fillOval(200, -60, 220, 220);
             g2.setColor(new Color(255, 255, 255, 16));
             g2.fillOval(-70, 380, 210, 210);
-            // Subtle grid
             g2.setColor(new Color(255, 255, 255, 8));
             g2.setStroke(new BasicStroke(1f));
             for (int x = 0; x < getWidth(); x += 28) g2.drawLine(x, 0, x, getHeight());
@@ -359,7 +359,6 @@ public class LoginView extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             int w = getWidth() - 12, h = getHeight() - 12;
-            // Shadow layers
             for (int i = 6; i >= 1; i--) {
                 g2.setColor(new Color(0, 0, 0, 5 * i));
                 g2.fillRoundRect(i + 2, i + 4, w, h, radius + 2, radius + 2);

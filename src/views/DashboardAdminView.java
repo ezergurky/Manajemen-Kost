@@ -1,16 +1,11 @@
 package views;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class KostDashboard extends JFrame {
+public class DashboardAdminView extends JFrame {
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
@@ -21,10 +16,10 @@ public class KostDashboard extends JFrame {
     private final Color TEXT_WHITE = new Color(248, 250, 252);
     private final Color TEXT_DARK = new Color(15, 23, 42);
 
-    public KostDashboard() {
+    public DashboardAdminView() {
         // Pengaturan Jendela Utama
         setTitle("Sistem Manajemen Kost");
-        setSize(1000, 650);
+        setSize(900, 580);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Menengahkah aplikasi di layar
         setLayout(new BorderLayout());
@@ -73,6 +68,7 @@ public class KostDashboard extends JFrame {
         // Rakit ke dalam Frame
         add(sidebar, BorderLayout.WEST);
         add(mainPanel, BorderLayout.CENTER);
+        setVisible(true);
     }
 
     // Method pembantu untuk merancang tombol agar flat dan modern
