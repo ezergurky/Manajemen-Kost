@@ -25,7 +25,7 @@ public class LoginView extends JFrame {
     public LoginView() {
         setTitle("Sistem Manajemen Kost");
         setSize(900, 580);
-        setMinimumSize(new Dimension(900, 580));
+        setMinimumSize(new Dimension(1100, 650));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initComponents();

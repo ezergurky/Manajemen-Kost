@@ -4,12 +4,12 @@ import components.SideBarAdmin;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
+public class MainFrameAdmin extends JFrame {
 
     private CardLayout cardLayout;
     private JPanel contentPanel;
 
-    public MainFrame() {
+    public MainFrameAdmin() {
         setTitle("Manajemen Kost — Admin");
         setSize(1200, 700);
         setMinimumSize(new Dimension(1100, 650));
@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
             catch (Exception ignored) {}
-            new MainFrame();
+            new MainFrameAdmin();
         });
     }
 }
