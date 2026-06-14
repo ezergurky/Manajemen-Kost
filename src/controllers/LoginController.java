@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
 import views.MainFrameAdmin;
+import views.MainFramePenghuni;
 import views.LoginView;
 
 import config.KoneksiDatabase;
@@ -46,7 +47,11 @@ public class LoginController {
                 JOptionPane.showMessageDialog(view, "Login berhasil sebagai " + role);
 
                 view.dispose();
-                new MainFrameAdmin();
+                if(role.equals("admin")) {
+                    new MainFrameAdmin();
+                } else if(role.equals("penghuni")) {
+                    new MainFramePenghuni();
+                }
             } else {
                 JOptionPane.showMessageDialog(view, "Email atau password salah");
             }

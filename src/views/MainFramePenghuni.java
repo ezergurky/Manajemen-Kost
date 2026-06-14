@@ -3,7 +3,7 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 
-import components.SideBarAdmin;
+import components.SideBarPenghuni;
 
 public class MainFramePenghuni extends JFrame {
     private CardLayout cardLayout;
@@ -22,7 +22,7 @@ public class MainFramePenghuni extends JFrame {
     private void initComponents() {
         JPanel root = new JPanel(new BorderLayout());
 
-        SideBarAdmin sidebar = new SideBarAdmin(this::navigateTo);
+        SideBarPenghuni sidebar = new SideBarPenghuni(this::navigateTo);
         root.add(sidebar, BorderLayout.WEST);
 
         cardLayout   = new CardLayout();

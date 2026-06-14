@@ -78,7 +78,7 @@ public class SideBarPenghuni extends JPanel {
             {"Tagihan", "BILL"},
             {"Riwayat Pembayaran",       "HISTORY"},
             {"Profile",    "PAY"},
-            {"Laporan",       "REPORT"},
+            {"Pengaturan",       "SETTINGS"},
         };
 
         int navY = 84;

@@ -6,6 +6,8 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
 
+// Source Code: Claude AI
+
 public class DataKamarPanel extends JPanel {
     private static final Color TEAL_PRIMARY  = new Color(20, 184, 166);
     private static final Color TEAL_DARK     = new Color(13, 148, 136);

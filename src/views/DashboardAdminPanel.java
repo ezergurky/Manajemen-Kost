@@ -5,6 +5,8 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 import java.awt.*;
 
+// Source Code: Claude AI
+
 public class DashboardAdminPanel extends JPanel {
 
     private JPanel contentArea;
