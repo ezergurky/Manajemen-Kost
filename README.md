@@ -16,7 +16,7 @@ Project ini dikembangkan sebagai tugas besar mata kuliah Desain dan Pemrograman 
 - Pencatatan dan Verifikasi Pembayaran
 - Laporan Keuangan
 - Dashboard Admin dan Penghuni
-- GUI berbasis JavaFX
+- GUI berbasis Swing
 
 ---
 
@@ -72,7 +72,7 @@ git clone https://github.com/ezergurky/Manajemen-Kost.git
 
 3. Import database MySQL menggunakan file:
 ```plaintext
-database/schema.sql
+database/kost.sql
 ```
 
 4. Pastikan JDBC Driver sudah tersedia pada folder:
