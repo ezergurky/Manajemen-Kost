@@ -1,8 +1,7 @@
 package controllers;
 
 import javax.swing.JOptionPane;
-
-import views.DashboardAdminView;
+import views.MainFrame;
 import views.LoginView;
 
 public class LoginController {
@@ -16,19 +15,20 @@ public class LoginController {
     public void initEvent() {
         view.getBtnLogin().addActionListener(e -> handleLogin());
     }
- 
+
     public void handleLogin() {
         String email = view.getEmail();
         String password = view.getPassword();
 
-        if(email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(view, "Email dan password harus diisi");
+            return;
         }
 
-        if(email.equals("ezerganteng@kost.com") && password.equals("123")) {
+        if (email.equals("ezer") && password.equals("123")) {
             JOptionPane.showMessageDialog(view, "Login berhasil sebagai Admin");
             view.dispose();
-            new DashboardAdminView();
+            new MainFrame();
         } else {
             JOptionPane.showMessageDialog(view, "Email atau password salah");
         }

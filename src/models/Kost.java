@@ -31,4 +31,16 @@ public class Kost {
         }
         System.out.println("Kamar dengan ID " + id + " tidak ditemukan.");
     }
+
+    public String getNamaKost() {
+        return namaKost;
+    }
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public List<Kamar> getDaftarKamar() {
+        return daftarKamar;
+    }
 }

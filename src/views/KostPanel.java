@@ -21,8 +21,6 @@ public class KostPanel extends JPanel {
     private JTextField txtHarga;
     private JComboBox<String> cbStatus;
 
-    private static final Color PRIMARY = new Color(20, 184, 166);
-
     public KostPanel(Kost kost) {
         this.kost = kost;
 

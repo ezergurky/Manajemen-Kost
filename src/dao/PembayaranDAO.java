@@ -19,7 +19,7 @@ public class PembayaranDAO implements CRUDRepository<Pembayaran, Integer> {
         String sql = "INSERT INTO pembayaran (tanggal, jumlah, status) VALUES (?, ?, ?)";
 
         try (Connection conn = KoneksiDatabase.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setDate(1, new java.sql.Date(data.getTanggal().getTime()));
             ps.setDouble(2, data.getJumlah());
