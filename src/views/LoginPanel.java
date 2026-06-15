@@ -5,7 +5,9 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class LoginView extends JFrame {
+// Source Code: Claude AI
+
+public class LoginPanel extends JFrame {
 
     private JTextField txtEmail;
     private JPasswordField txtPassword;
@@ -22,7 +24,7 @@ public class LoginView extends JFrame {
     private static final Color BORDER_COLOR = new Color(218, 225, 234);
     private static final Color INPUT_BG     = new Color(249, 251, 253);
 
-    public LoginView() {
+    public LoginPanel() {
         setTitle("Sistem Manajemen Kost");
         setSize(900, 580);
         setMinimumSize(new Dimension(1100, 650));

@@ -1,6 +1,8 @@
 package views;
 
 import components.SideBarAdmin;
+import views.Admin.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,8 +32,10 @@ public class MainFrameAdmin extends JFrame {
 
         contentPanel.add(new DashboardAdminPanel(), "DASH");
         contentPanel.add(new DataKamarPanel(),      "ROOM");
-        // contentPanel.add(new DataPenghuniPanel(), "TENANT");
-        // contentPanel.add(new TagihanPanel(),      "BILL");
+        contentPanel.add(new DataPenghuniPanel(), "TENANT");
+        contentPanel.add(new TagihanPanel(),      "BILL");
+        contentPanel.add(new PembayaranPanel(), "PAY");
+        contentPanel.add(new LaporanPanel(), "REPORT");
 
         root.add(contentPanel, BorderLayout.CENTER);
         setContentPane(root);

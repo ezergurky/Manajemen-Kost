@@ -1,9 +1,10 @@
 package views;
 
+import components.SideBarPenghuni;
+import views.Penghuni.*;
+
 import javax.swing.*;
 import java.awt.*;
-
-import components.SideBarPenghuni;
 
 public class MainFramePenghuni extends JFrame {
     private CardLayout cardLayout;
@@ -28,10 +29,12 @@ public class MainFramePenghuni extends JFrame {
         cardLayout   = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        // contentPanel.add(new DashboardAdminPanel(), "DASH");
-        // contentPanel.add(new DataKamarPanel(),      "ROOM");
-        // contentPanel.add(new DataPenghuniPanel(), "TENANT");
-        // contentPanel.add(new TagihanPanel(),      "BILL");
+        contentPanel.add(new DashboardPenghuniPanel(), "DASH");
+        contentPanel.add(new KamarSayaPanel(),      "ROOM");
+        contentPanel.add(new TagihanPanel(), "BILL");
+        contentPanel.add(new RiwayatPembayaranPanel(),      "HISTORY");
+        contentPanel.add(new ProfilePanel(),      "PROFILE");
+        contentPanel.add(new PengaturanPanel(),      "SETTINGS");
 
         root.add(contentPanel, BorderLayout.CENTER);
         setContentPane(root);

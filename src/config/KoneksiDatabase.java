@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class KoneksiDatabase {
-    private static final String URL = "jdbc:mysql://localhost:3306/kost";
+    private static final String URL = "jdbc:mysql://root:gpmmtCjrUUpyChrKLfhpPiNaTZzIJWdb@acela.proxy.rlwy.net:38807/kost";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "gpmmtCjrUUpyChrKLfhpPiNaTZzIJWdb";
 
     private static Connection connection = null;
 

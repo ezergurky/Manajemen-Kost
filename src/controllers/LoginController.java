@@ -7,14 +7,14 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import views.MainFrameAdmin;
 import views.MainFramePenghuni;
-import views.LoginView;
+import views.LoginPanel;
 
 import config.KoneksiDatabase;
 
 public class LoginController {
-    private final LoginView view;
+    private final LoginPanel view;
 
-    public LoginController(LoginView view) {
+    public LoginController(LoginPanel view) {
         this.view = view;
         initEvent();
     }

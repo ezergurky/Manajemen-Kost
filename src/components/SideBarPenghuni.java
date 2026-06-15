@@ -11,9 +11,12 @@ import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
 public class SideBarPenghuni extends JPanel {
-    private static final Color TEAL_PRIMARY  = new Color(20, 184, 166);
-    private static final Color SIDEBAR_BG    = new Color(18, 24, 38);
-    private static final Color TEXT_LIGHT    = new Color(148, 163, 184);
+    private static final Color TEAL_PRIMARY = new Color(20, 184, 166);
+    private static final Color TEAL_DARK    = new Color(13, 148, 136);
+    private static final Color BG_SIDEBAR   = new Color(249, 251, 253);
+    private static final Color TEXT_DARK    = new Color(15, 23, 42);
+    private static final Color TEXT_MED     = new Color(71, 85, 105);
+    private static final Color BORDER_COLOR = new Color(218, 225, 234);
 
     private final Consumer<String> onNavigate;
     private NavButton activeNavBtn;
@@ -22,21 +25,23 @@ public class SideBarPenghuni extends JPanel {
         this.onNavigate = onNavigate;
         setLayout(null);
         setPreferredSize(new Dimension(230, 700));
-        setBackground(SIDEBAR_BG);
+        setBackground(BG_SIDEBAR);
+        setBorder(new MatteBorder(0, 0, 0, 1, BORDER_COLOR));
         buildSidebar();
     }
 
     private void buildSidebar() {
 
         JPanel logoArea = new JPanel(new BorderLayout());
-        logoArea.setBackground(SIDEBAR_BG);
+        logoArea.setBackground(BG_SIDEBAR);
         logoArea.setBounds(0, 0, 230, 72);
-        logoArea.setBorder(new MatteBorder(0, 0, 1, 0, new Color(255, 255, 255, 12)));
+        logoArea.setBorder(new MatteBorder(0, 0, 1, 0, BORDER_COLOR));
 
         JPanel logoInner = new JPanel(new FlowLayout(FlowLayout.LEFT, 18, 0));
-        logoInner.setBackground(SIDEBAR_BG);
+        logoInner.setBackground(BG_SIDEBAR);
 
         JPanel miniIcon = new JPanel() {
+            @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -60,10 +65,10 @@ public class SideBarPenghuni extends JPanel {
         logoText.setLayout(new BoxLayout(logoText, BoxLayout.Y_AXIS));
         JLabel appName = new JLabel("ManajemenKost");
         appName.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        appName.setForeground(Color.WHITE);
-        JLabel roleTag = new JLabel("Administrator");
-        roleTag.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-        roleTag.setForeground(TEAL_PRIMARY);
+        appName.setForeground(TEXT_DARK);
+        JLabel roleTag = new JLabel("Penghuni");
+        roleTag.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        roleTag.setForeground(TEAL_DARK);
         logoText.add(appName);
         logoText.add(roleTag);
 
@@ -73,12 +78,12 @@ public class SideBarPenghuni extends JPanel {
         this.add(logoArea); 
 
         String[][] navItems = {
-            {"Dashboard",     "DASH"},
-            {"Kamar Saya",    "ROOM"},
-            {"Tagihan", "BILL"},
-            {"Riwayat Pembayaran",       "HISTORY"},
-            {"Profile",    "PAY"},
-            {"Pengaturan",       "SETTINGS"},
+            {"Dashboard",          "DASH"},
+            {"Kamar Saya",         "ROOM"},
+            {"Tagihan",            "BILL"},
+            {"Riwayat Pembayaran", "HISTORY"},
+            {"Profile",            "PROFILE"},
+            {"Pengaturan",         "SETTINGS"},
         };
 
         int navY = 84;
@@ -97,24 +102,23 @@ public class SideBarPenghuni extends JPanel {
             navY += 50;
         }
 
-        // Divider
         JSeparator div = new JSeparator();
-        div.setForeground(new Color(255, 255, 255, 12));
+        div.setForeground(BORDER_COLOR);
         div.setBounds(16, navY + 4, 198, 1);
-        this.add(div); // FIX: add ke this
+        this.add(div); 
 
-        // Logout button
         NavButton logoutBtn = new NavButton("Keluar", "LOGOUT");
         logoutBtn.setBounds(10, navY + 14, 210, 44);
-        this.add(logoutBtn); // FIX: add ke this
+        logoutBtn.addActionListener(e -> onNavigate.accept("LOGOUT"));
+        this.add(logoutBtn);
 
-        // User info at bottom
         JPanel userCard = new JPanel(null);
-        userCard.setBackground(new Color(255, 255, 255, 8));
-        userCard.setBorder(new LineBorder(new Color(255, 255, 255, 15), 1, true));
+        userCard.setBackground(Color.WHITE);
+        userCard.setBorder(new LineBorder(BORDER_COLOR, 1, true));
         userCard.setBounds(10, 620, 210, 56);
 
         JPanel avatar = new JPanel() {
+            @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -123,7 +127,7 @@ public class SideBarPenghuni extends JPanel {
                 g2.setColor(Color.WHITE);
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 14));
                 FontMetrics fm = g2.getFontMetrics();
-                String init = "A";
+                String init = "P";
                 g2.drawString(init,
                     (36 - fm.stringWidth(init)) / 2,
                     (36 + fm.getAscent() - fm.getDescent()) / 2);
@@ -134,19 +138,19 @@ public class SideBarPenghuni extends JPanel {
         avatar.setBounds(10, 10, 36, 36);
         userCard.add(avatar);
 
-        JLabel userName = new JLabel("Admin");
+        JLabel userName = new JLabel("Penghuni");
         userName.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        userName.setForeground(Color.WHITE);
+        userName.setForeground(TEXT_DARK);
         userName.setBounds(54, 10, 120, 18);
         userCard.add(userName);
 
-        JLabel userEmail = new JLabel("admin@kost.id");
+        JLabel userEmail = new JLabel("penghuni@kost.id");
         userEmail.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-        userEmail.setForeground(TEXT_LIGHT);
+        userEmail.setForeground(TEXT_MED);
         userEmail.setBounds(54, 28, 150, 14);
         userCard.add(userEmail);
 
-        this.add(userCard); // FIX: add ke this
+        this.add(userCard); 
     }
 
     private void setActiveNav(NavButton btn) {
@@ -154,14 +158,13 @@ public class SideBarPenghuni extends JPanel {
         activeNavBtn = btn;
     }
 
-    // FIX 4: NavButton dipindahkan ke sini (dari DashboardAdminView) supaya SidebarAdmin bisa pakai
     private class NavButton extends JButton {
         private boolean active = false;
 
         NavButton(String label, String type) {
             setText(label);
             setFont(new Font("Segoe UI", Font.PLAIN, 13));
-            setForeground(TEXT_LIGHT);
+            setForeground(TEXT_MED);
             setHorizontalAlignment(SwingConstants.LEFT);
             setOpaque(false);
             setContentAreaFilled(false);
@@ -172,14 +175,16 @@ public class SideBarPenghuni extends JPanel {
             setIconTextGap(10);
 
             addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseEntered(MouseEvent e) { if (!active) repaint(); }
+                @Override
                 public void mouseExited(MouseEvent e)  { if (!active) repaint(); }
             });
         }
 
         public void setActive(boolean a) {
             this.active = a;
-            setForeground(a ? Color.WHITE : TEXT_LIGHT);
+            setForeground(a ? TEAL_DARK : TEXT_MED);
             setFont(new Font("Segoe UI", a ? Font.BOLD : Font.PLAIN, 13));
             repaint();
         }
@@ -189,12 +194,12 @@ public class SideBarPenghuni extends JPanel {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             if (active) {
-                g2.setColor(new Color(20, 184, 166, 25));
+                g2.setColor(new Color(20, 184, 166, 18));
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
                 g2.setColor(TEAL_PRIMARY);
                 g2.fillRoundRect(0, 8, 3, getHeight() - 16, 3, 3);
             } else if (getModel().isRollover()) {
-                g2.setColor(new Color(255, 255, 255, 8));
+                g2.setColor(new Color(15, 23, 42, 10));
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
             }
             g2.dispose();

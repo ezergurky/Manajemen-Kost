@@ -2,10 +2,10 @@ package main;
 
 import javax.swing.SwingUtilities;
 
-import views.LoginView;
+import views.LoginPanel;
 
 public class MainApp {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginView());
+        SwingUtilities.invokeLater(() -> new LoginPanel());
     }
 }

@@ -1,4 +1,4 @@
-package views;
+package views.Admin;
 
 import models.Kamar;
 import models.Kost;
@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+// Source Code: Claude AI
 
 public class KostPanel extends JPanel {
 
