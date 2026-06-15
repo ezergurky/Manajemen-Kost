@@ -102,12 +102,12 @@ Database terdiri dari beberapa tabel utama:
 
 ## Tim Pengembang
 
-|               Nama                |
-|-----------------------------------|
-| Ezer Raditia Nayanta Sembiring    |
-| Fikri Al Idris                    |
-| Imanuel Putra Palembangan         |
-| Muhammad Daffa Satria Sadikin     |
+| Nama | GitHub |
+|------|--------|
+| **Ezer Raditia Nayanta Sembiring** | [@ezergurky](https://github.com/ezergurky) |
+| **Fikri Al Idris** | [@Bakut321](https://github.com/Bakut321) |
+| **Imanuel Putra Palembangan** | [@Nuelxx22](https://github.com/Nuelxx22) |
+| **Muhammad Daffa Satria Sadikin** | [@unknown9163627](https://github.com/unknown9163627) |
 
 ---
 
