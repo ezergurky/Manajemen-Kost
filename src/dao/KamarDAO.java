@@ -17,9 +17,6 @@ public class KamarDAO {
         conn = KoneksiDatabase.getConnection();
     }
 
-    // ==========================
-    // READ ALL
-    // ==========================
     public List<Kamar> getAll() {
 
         List<Kamar> list = new ArrayList<>();
@@ -53,9 +50,6 @@ public class KamarDAO {
         return list;
     }
 
-    // ==========================
-    // INSERT
-    // ==========================
     public boolean insert(Kamar kamar) {
 
         String sql = "INSERT INTO kamar(nomor,harga,status) VALUES(?,?,?)";
@@ -77,9 +71,6 @@ public class KamarDAO {
         return false;
     }
 
-    // ==========================
-    // UPDATE
-    // ==========================
     public boolean update(Kamar kamar) {
 
         String sql = "UPDATE kamar SET nomor=?, harga=?, status=? WHERE id_kamar=?";
@@ -102,9 +93,6 @@ public class KamarDAO {
         return false;
     }
 
-    // ==========================
-    // DELETE
-    // ==========================
     public boolean delete(int idKamar) {
 
         String sql = "DELETE FROM kamar WHERE id_kamar=?";
@@ -123,10 +111,7 @@ public class KamarDAO {
 
         return false;
     }
-
-    // ==========================
-    // GET BY ID
-    // ==========================
+    
     public Kamar getById(int idKamar) {
 
         String sql = "SELECT * FROM kamar WHERE id_kamar=?";
