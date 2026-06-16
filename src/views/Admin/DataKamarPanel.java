@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import controllers.KamarController;
+
 // Source Code: Gemini AI
 
 public class DataKamarPanel extends JPanel {
@@ -31,6 +33,8 @@ public class DataKamarPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+
+        new KamarController(this);
     }
 
     private void initComponents() {
@@ -191,7 +195,7 @@ public class DataKamarPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
+        // loadDummyData();
 
         return tableContainer;
     }
