@@ -235,11 +235,11 @@ public class DataKamarPanel extends JPanel {
         return btn;
     }
 
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"101", "Standard", "Kasur, Lemari, KM Dalam", "Rp 800.000", "Terisi"});
-        tableModel.addRow(new Object[]{"102", "Standard", "Kasur, Lemari, KM Dalam", "Rp 800.000", "Tersedia"});
-        tableModel.addRow(new Object[]{"201", "Exclusive", "AC, Kasur, TV, KM Dalam, Wi-Fi", "Rp 1.500.000", "Terisi"});
-    }
+    // private void loadDummyData() {
+    //     tableModel.addRow(new Object[]{"101", "Standard", "Kasur, Lemari, KM Dalam", "Rp 800.000", "Terisi"});
+    //     tableModel.addRow(new Object[]{"102", "Standard", "Kasur, Lemari, KM Dalam", "Rp 800.000", "Tersedia"});
+    //     tableModel.addRow(new Object[]{"201", "Exclusive", "AC, Kasur, TV, KM Dalam, Wi-Fi", "Rp 1.500.000", "Terisi"});
+    // }
 
     public JTextField getTxtSearch() { 
         return txtSearch; 
