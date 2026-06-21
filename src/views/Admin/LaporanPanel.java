@@ -5,6 +5,9 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controllers.Admin.LaporanController;
+
 import java.awt.*;
 
 public class LaporanPanel extends JPanel {
@@ -26,6 +29,8 @@ public class LaporanPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+        
+        new LaporanController(this);
     }
 
     private void initComponents() {
@@ -75,8 +80,8 @@ public class LaporanPanel extends JPanel {
         JPanel summaryContainer = new JPanel(new GridLayout(1, 2, 24, 0));
         summaryContainer.setOpaque(false);
         
-        lblTotalPendapatan = new JLabel("Rp 2.050.000");
-        lblTotalTunggakan = new JLabel("Rp 950.000");
+        lblTotalPendapatan = new JLabel("Rp 0");
+        lblTotalTunggakan = new JLabel("Rp 0");
 
         JPanel cardPendapatan = createSummaryCard("Total Pendapatan Terinput", lblTotalPendapatan, new Color(16, 185, 129));
         JPanel cardTunggakan = createSummaryCard("Total Tunggakan Belum Bayar", lblTotalTunggakan, new Color(239, 68, 68));
@@ -220,8 +225,6 @@ public class LaporanPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
-
         return tableContainer;
     }
 
@@ -266,12 +269,6 @@ public class LaporanPanel extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return btn;
-    }
-
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"Pembayaran Sewa Budi Santoso (Kamar A01)", "Mei / 2026", "Transfer Bank", "Rp 750.000", "Lunas"});
-        tableModel.addRow(new Object[]{"Pembayaran Sewa Siti Aisyah (Kamar B01)", "Mei / 2026", "QRIS", "Rp 500.000", "Lunas"});
-        tableModel.addRow(new Object[]{"Pembayaran Sewa Admin Utama (Kamar A02)", "April / 2026", "Cash", "Rp 800.000", "Lunas"});
     }
 
     public JComboBox<String> getCbBulan() { return cbBulan; }

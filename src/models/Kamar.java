@@ -1,31 +1,31 @@
 package models;
 
 public class Kamar {
-
     private int idKamar;
-    private String nomor;
+    private int idKost;
+    private String nomorKamar;
+    private String tipeKamar;
+    private String fasilitas;
     private double harga;
     private String status;
 
-    public Kamar(int idKamar, String nomor, double harga, String status) {
-
+    public Kamar(int idKamar, int idKost, String nomorKamar, String tipeKamar, String fasilitas, double harga, String status) {
         if (harga < 0) {
             throw new IllegalArgumentException("Harga kamar tidak boleh negatif!");
         }
 
         this.idKamar = idKamar;
-        this.nomor = nomor;
+        this.idKost = idKost;
+        this.nomorKamar = nomorKamar;
+        this.tipeKamar = tipeKamar;
+        this.fasilitas = fasilitas;
         this.harga = harga;
         this.status = status;
     }
 
     public void updateStatus(String status) {
-
-        if (status.equalsIgnoreCase("tersedia")
-                || status.equalsIgnoreCase("terisi")) {
-
+        if (status.equalsIgnoreCase("tersedia") || status.equalsIgnoreCase("terisi")) {
             this.status = status;
-            System.out.println("Status kamar berhasil diperbarui.");
         } else {
             throw new IllegalArgumentException("Status kamar tidak valid!");
         }
@@ -33,9 +33,9 @@ public class Kamar {
 
     public void updateStatus(boolean terisi) {
         if (terisi) {
-            this.status = "Terisi";
+            this.status = "terisi";
         } else {
-            this.status = "Tersedia";
+            this.status = "tersedia";
         }
     }
 
@@ -43,8 +43,20 @@ public class Kamar {
         return idKamar;
     }
 
-    public String getNomor() {
-        return nomor;
+    public int getIdKost() {
+        return idKost;
+    }
+
+    public String getNomorKamar() {
+        return nomorKamar;
+    }
+
+    public String getTipeKamar() {
+        return tipeKamar;
+    }
+
+    public String getFasilitas() {
+        return fasilitas;
     }
 
     public double getHarga() {
@@ -55,30 +67,30 @@ public class Kamar {
         return status;
     }
 
-    public void setNomor(String nomor) {
-        this.nomor = nomor;
+    public void setIdKost(int idKost) {
+        this.idKost = idKost;
+    }
+
+    public void setNomorKamar(String nomorKamar) {
+        this.nomorKamar = nomorKamar;
+    }
+
+    public void setTipeKamar(String tipeKamar) {
+        this.tipeKamar = tipeKamar;
+    }
+
+    public void setFasilitas(String fasilitas) {
+        this.fasilitas = fasilitas;
     }
 
     public void setHarga(double harga) {
-
         if (harga < 0) {
             throw new IllegalArgumentException("Harga tidak boleh negatif!");
         }
-
         this.harga = harga;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Kamar{" +
-                "idKamar=" + idKamar +
-                ", nomor='" + nomor + '\'' +
-                ", harga=" + harga +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

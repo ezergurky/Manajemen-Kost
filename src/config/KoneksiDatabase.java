@@ -5,13 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class KoneksiDatabase {
-    // private static final String URL = "jdbc:mysql://root:gpmmtCjrUUpyChrKLfhpPiNaTZzIJWdb@acela.proxy.rlwy.net:38807/kost";
-    // private static final String USER = "root";
-    // private static final String PASSWORD = "gpmmtCjrUUpyChrKLfhpPiNaTZzIJWdb";
+    private static final String URL = "jdbc:mysql://mysql-1713d438-mabiring2207-0f97.i.aivencloud.com:24441/kost?sslMode=REQUIRED";
+    private static final String USER = "avnadmin";
+    private static final String PASSWORD = "AVNS_2gJCxwvDQto8THuO48k";
 
-    private static final String URL = "jdbc:mysql://localhost:3306/kost";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    // private static final String URL = "jdbc:mysql://localhost:3306/kost";
+    // private static final String USER = "root";
+    // private static final String PASSWORD = "";
 
     private static Connection connection = null;
 

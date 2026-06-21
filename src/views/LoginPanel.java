@@ -26,9 +26,10 @@ public class LoginPanel extends JFrame {
 
     public LoginPanel() {
         setTitle("Sistem Manajemen Kost");
-        setSize(900, 580);
+        setSize(1200, 700);
         setMinimumSize(new Dimension(1100, 650));
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initComponents();
         new controllers.LoginController(this);

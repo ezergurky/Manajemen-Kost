@@ -5,13 +5,12 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controllers.Admin.KamarController;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
-import controllers.KamarController;
-
-// Source Code: Gemini AI
 
 public class DataKamarPanel extends JPanel {
 
@@ -195,8 +194,6 @@ public class DataKamarPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        // loadDummyData();
-
         return tableContainer;
     }
 
@@ -234,12 +231,6 @@ public class DataKamarPanel extends JPanel {
 
         return btn;
     }
-
-    // private void loadDummyData() {
-    //     tableModel.addRow(new Object[]{"101", "Standard", "Kasur, Lemari, KM Dalam", "Rp 800.000", "Terisi"});
-    //     tableModel.addRow(new Object[]{"102", "Standard", "Kasur, Lemari, KM Dalam", "Rp 800.000", "Tersedia"});
-    //     tableModel.addRow(new Object[]{"201", "Exclusive", "AC, Kasur, TV, KM Dalam, Wi-Fi", "Rp 1.500.000", "Terisi"});
-    // }
 
     public JTextField getTxtSearch() { 
         return txtSearch; 

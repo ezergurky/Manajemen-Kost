@@ -14,8 +14,9 @@ public class MainFrameAdmin extends JFrame {
     public MainFrameAdmin() {
         setTitle("Manajemen Kost — Admin");
         setSize(1200, 700);
-        setMinimumSize(new Dimension(1100, 650));
+        setMinimumSize(new Dimension(1000, 650));
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initComponents();
         setVisible(true);

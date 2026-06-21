@@ -1,12 +1,40 @@
 package models;
 
 public class Penghuni extends User {
+    private int idPenghuni;
+    private String nik;
+    private String noHp;
     private Kamar kamarSewa;
-    private String status;
 
-    public Penghuni(int id, String nama, String email, String password, String status) {
-        super(id, nama, email, password);
-        this.status = status;
+    public Penghuni(int idUser, String nama, String email, String password, int idPenghuni, String nik, String noHp) {
+        super(idUser, nama, email, password);
+        this.idPenghuni = idPenghuni;
+        this.nik = nik;
+        this.noHp = noHp;
+    }
+
+    public int getIdPenghuni() {
+        return idPenghuni;
+    }
+
+    public void setIdPenghuni(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
+    }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getNoHp() {
+        return noHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
     }
 
     public Kamar getKamarSewa() {
@@ -15,14 +43,6 @@ public class Penghuni extends User {
 
     public void setKamarSewa(Kamar kamarSewa) {
         this.kamarSewa = kamarSewa;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public void lihatTagihan() {

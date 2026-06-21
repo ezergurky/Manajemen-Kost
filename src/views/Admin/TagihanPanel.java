@@ -5,6 +5,9 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controllers.Admin.TagihanController;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -29,6 +32,8 @@ public class TagihanPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+        
+        new TagihanController(this);
     }
 
     private void initComponents() {
@@ -190,8 +195,6 @@ public class TagihanPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
-
         return tableContainer;
     }
 
@@ -228,12 +231,6 @@ public class TagihanPanel extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return btn;
-    }
-
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"INV-2026-001", "Budi Santoso", "Kamar 102", "Rp 850.000", "05 Jun 2026", "Lunas"});
-        tableModel.addRow(new Object[]{"INV-2026-002", "Siti Aminah", "Kamar 105", "Rp 800.000", "05 Jun 2026", "Belum Bayar"});
-        tableModel.addRow(new Object[]{"INV-2026-003", "Rian Hidayat", "Kamar 201", "Rp 1.620.000", "05 Jun 2026", "Belum Bayar"});
     }
 
     public JTextField getTxtSearch() { return txtSearch; }

@@ -1,236 +1,242 @@
 package views.Admin;
 
-import models.Kamar;
-import models.Kost;
-import utils.FormatUtils;
-
 import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
-// Source Code: Claude AI
+import controllers.Admin.KostController;
 
 public class KostPanel extends JPanel {
 
-    private final Kost kost;
+    private static final Color TEAL_PRIMARY = new Color(20, 184, 166);
+    private static final Color TEAL_DARK    = new Color(13, 148, 136);
+    private static final Color BG_PANEL     = new Color(240, 244, 248);
+    private static final Color TEXT_DARK    = new Color(15, 23, 42);
+    private static final Color TEXT_MED     = new Color(71, 85, 105);
+    private static final Color TEXT_LIGHT   = new Color(148, 163, 184);
+    private static final Color BORDER_COLOR = new Color(218, 225, 234);
+    private static final Color INPUT_BG     = new Color(249, 251, 253);
 
-    private JTable tableKamar;
+    private JTextField txtSearch;
+    private JButton btnTambah, btnEdit, btnHapus;
+    private JTable tableKost;
     private DefaultTableModel tableModel;
 
-    private JTextField txtId;
-    private JTextField txtNomor;
-    private JTextField txtHarga;
-    private JComboBox<String> cbStatus;
-
-    public KostPanel(Kost kost) {
-        this.kost = kost;
-
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setBackground(new Color(241, 245, 249));
-
-        add(buildHeader(), BorderLayout.NORTH);
-        add(buildTable(), BorderLayout.CENTER);
-        add(buildForm(), BorderLayout.SOUTH);
-
-        refreshTable();
+    public KostPanel() {
+        setLayout(new BorderLayout());
+        setBackground(BG_PANEL);
+        initComponents();
+        
+        new KostController(this);
     }
 
-    private JPanel buildHeader() {
-        JPanel header = new JPanel(new BorderLayout());
-        header.setOpaque(false);
+    private void initComponents() {
+        JPanel topBar = new JPanel(new BorderLayout());
+        topBar.setBackground(Color.WHITE);
+        topBar.setPreferredSize(new Dimension(0, 72));
+        topBar.setBorder(new MatteBorder(0, 0, 1, 0, BORDER_COLOR));
+        topBar.setLayout(new GridBagLayout());
 
-        JLabel title = new JLabel("Data Kamar - " + kost.getNamaKost());
-        title.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        JPanel titleContainer = new JPanel();
+        titleContainer.setOpaque(false);
+        titleContainer.setLayout(new BoxLayout(titleContainer, BoxLayout.Y_AXIS));
 
-        JLabel subtitle = new JLabel(kost.getAlamat());
-        subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        subtitle.setForeground(new Color(100, 116, 139));
+        JLabel titleLabel = new JLabel("Data Cabang Kost");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        titleLabel.setForeground(TEXT_DARK);
 
-        JPanel textWrap = new JPanel();
-        textWrap.setOpaque(false);
-        textWrap.setLayout(new BoxLayout(textWrap, BoxLayout.Y_AXIS));
-        textWrap.add(title);
-        textWrap.add(subtitle);
+        JLabel subLabel = new JLabel("Kelola informasi nama properti dan detail alamat cabang kost");
+        subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        subLabel.setForeground(TEXT_MED);
 
-        header.add(textWrap, BorderLayout.WEST);
-        return header;
+        titleContainer.add(titleLabel);
+        titleContainer.add(Box.createVerticalStrut(2));
+        titleContainer.add(subLabel);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 32, 0, 0);
+        topBar.add(titleContainer, gbc);
+
+        add(topBar, BorderLayout.NORTH);
+
+        JPanel mainContent = new JPanel(new BorderLayout());
+        mainContent.setOpaque(false);
+        mainContent.setBorder(new EmptyBorder(24, 32, 24, 32));
+
+        JPanel contentCard = new JPanel(new BorderLayout());
+        contentCard.setBackground(Color.WHITE);
+        contentCard.setBorder(new LineBorder(BORDER_COLOR, 1, true));
+        contentCard.add(createToolbarPanel(), BorderLayout.NORTH);
+        contentCard.add(createTablePanel(), BorderLayout.CENTER);
+
+        mainContent.add(contentCard, BorderLayout.CENTER);
+        add(mainContent, BorderLayout.CENTER);
     }
 
-    private JScrollPane buildTable() {
-        String[] kolom = {"ID Kamar", "Nomor", "Harga", "Status"};
-        tableModel = new DefaultTableModel(kolom, 0) {
+    private JPanel createToolbarPanel() {
+        JPanel toolbar = new JPanel(new BorderLayout());
+        toolbar.setBackground(Color.WHITE);
+        toolbar.setBorder(new EmptyBorder(20, 20, 16, 20));
+
+        txtSearch = new JTextField("Cari nama cabang kost...");
+        txtSearch.setPreferredSize(new Dimension(280, 40));
+        txtSearch.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        txtSearch.setBackground(INPUT_BG);
+        txtSearch.setForeground(TEXT_LIGHT);
+        txtSearch.setCaretColor(TEAL_PRIMARY);
+        txtSearch.setBorder(new CompoundBorder(
+                new LineBorder(BORDER_COLOR, 1, true),
+                new EmptyBorder(0, 12, 0, 12)
+        ));
+
+        txtSearch.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearch.getText().equals("Cari nama cabang kost...")) {
+                    txtSearch.setText("");
+                    txtSearch.setForeground(TEXT_DARK);
+                }
+                txtSearch.setBorder(new CompoundBorder(
+                        new LineBorder(TEAL_PRIMARY, 2, true),
+                        new EmptyBorder(0, 11, 0, 11)
+                ));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearch.getText().trim().isEmpty()) {
+                    txtSearch.setForeground(TEXT_LIGHT);
+                    txtSearch.setText("Cari nama cabang kost...");
+                }
+                txtSearch.setBorder(new CompoundBorder(
+                        new LineBorder(BORDER_COLOR, 1, true),
+                        new EmptyBorder(0, 12, 0, 12)
+                ));
+            }
+        });
+
+        toolbar.add(txtSearch, BorderLayout.WEST);
+
+        JPanel btnActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        btnActionPanel.setOpaque(false);
+
+        btnTambah = createStyledButton("Tambah Kost", TEAL_PRIMARY, TEAL_DARK, true);
+        btnEdit = createStyledButton("Edit", Color.WHITE, new Color(240, 244, 248), false);
+        btnHapus = createStyledButton("Hapus", new Color(239, 68, 68), new Color(220, 38, 38), true);
+
+        btnActionPanel.add(btnTambah);
+        btnActionPanel.add(btnEdit);
+        btnActionPanel.add(btnHapus);
+
+        toolbar.add(btnActionPanel, BorderLayout.EAST);
+        return toolbar;
+    }
+
+    private JPanel createTablePanel() {
+        JPanel tableContainer = new JPanel(new BorderLayout());
+        tableContainer.setBackground(Color.WHITE);
+        tableContainer.setBorder(new EmptyBorder(0, 20, 20, 20));
+
+        String[] columns = {"ID Kost", "Nama Cabang / Kost", "Alamat Lengkap"};
+        tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
 
-        tableKamar = new JTable(tableModel);
-        tableKamar.setRowHeight(28);
-        tableKamar.getSelectionModel().addListSelectionListener(e -> isiFormDariBaris());
+        tableKost = new JTable(tableModel);
+        tableKost.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tableKost.setRowHeight(40);
+        tableKost.setGridColor(new Color(241, 245, 249));
+        tableKost.setSelectionBackground(new Color(20, 184, 166, 20));
+        tableKost.setSelectionForeground(TEXT_DARK);
+        tableKost.setShowVerticalLines(false);
 
-        return new JScrollPane(tableKamar);
-    }
+        JTableHeader header = tableKost.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        header.setBackground(new Color(248, 250, 252));
+        header.setForeground(TEXT_MED);
+        header.setPreferredSize(new Dimension(header.getWidth(), 40));
+        header.setBorder(new MatteBorder(0, 0, 1, 0, BORDER_COLOR));
 
-    private JPanel buildForm() {
-        JPanel form = new JPanel(new GridBagLayout());
-        form.setBorder(BorderFactory.createTitledBorder("Form Kamar"));
-        form.setOpaque(false);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 5, 5);
-        c.fill = GridBagConstraints.HORIZONTAL;
-
-        txtId = new JTextField(10);
-        txtNomor = new JTextField(10);
-        txtHarga = new JTextField(10);
-        cbStatus = new JComboBox<>(new String[]{"Tersedia", "Terisi"});
-
-        c.gridx = 0; c.gridy = 0; form.add(new JLabel("ID Kamar"), c);
-        c.gridx = 1; form.add(txtId, c);
-        c.gridx = 2; form.add(new JLabel("Nomor Kamar"), c);
-        c.gridx = 3; form.add(txtNomor, c);
-
-        c.gridx = 0; c.gridy = 1; form.add(new JLabel("Harga"), c);
-        c.gridx = 1; form.add(txtHarga, c);
-        c.gridx = 2; form.add(new JLabel("Status"), c);
-        c.gridx = 3; form.add(cbStatus, c);
-
-        JButton btnTambah = new JButton("Tambah");
-        JButton btnUpdate = new JButton("Update");
-        JButton btnHapus = new JButton("Hapus");
-        JButton btnBersihkan = new JButton("Bersihkan");
-
-        btnTambah.addActionListener(e -> tambahKamar());
-        btnUpdate.addActionListener(e -> updateKamar());
-        btnHapus.addActionListener(e -> hapusKamar());
-        btnBersihkan.addActionListener(e -> bersihkanForm());
-
-        JPanel tombolPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        tombolPanel.setOpaque(false);
-        tombolPanel.add(btnTambah);
-        tombolPanel.add(btnUpdate);
-        tombolPanel.add(btnHapus);
-        tombolPanel.add(btnBersihkan);
-
-        c.gridx = 0; c.gridy = 2; c.gridwidth = 4;
-        form.add(tombolPanel, c);
-
-        return form;
-    }
-
-    private void refreshTable() {
-        tableModel.setRowCount(0);
-        for (Kamar kamar : kost.getDaftarKamar()) {
-            tableModel.addRow(new Object[]{
-                    kamar.getIdKamar(),
-                    kamar.getNomor(),
-                    FormatUtils.formatRupiah(kamar.getHarga()),
-                    kamar.getStatus()
-            });
-        }
-    }
-
-    private void isiFormDariBaris() {
-        int row = tableKamar.getSelectedRow();
-        if (row < 0) {
-            return;
-        }
-        txtId.setText(tableModel.getValueAt(row, 0).toString());
-        txtNomor.setText(tableModel.getValueAt(row, 1).toString());
-
-        Kamar kamar = cariKamarById(Integer.parseInt(txtId.getText()));
-        if (kamar != null) {
-            txtHarga.setText(String.valueOf(kamar.getHarga()));
-            cbStatus.setSelectedItem(kamar.getStatus().equalsIgnoreCase("Terisi") ? "Terisi" : "Tersedia");
-        }
-    }
-
-    private void tambahKamar() {
-        try {
-            int id = Integer.parseInt(txtId.getText().trim());
-            String nomor = FormatUtils.rapikanTeks(txtNomor.getText());
-            double harga = Double.parseDouble(txtHarga.getText().trim());
-            String status = (String) cbStatus.getSelectedItem();
-
-            if (nomor.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Nomor kamar tidak boleh kosong.");
-                return;
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        DefaultTableCellRenderer paddingRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setBorder(new EmptyBorder(0, 12, 0, 12));
+                return this;
             }
+        };
 
-            if (cariKamarById(id) != null) {
-                JOptionPane.showMessageDialog(this, "ID Kamar sudah digunakan.");
-                return;
+        tableKost.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tableKost.getColumnModel().getColumn(1).setCellRenderer(paddingRenderer);
+        tableKost.getColumnModel().getColumn(2).setCellRenderer(paddingRenderer);
+
+        tableKost.getColumnModel().getColumn(0).setPreferredWidth(100);
+        tableKost.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tableKost.getColumnModel().getColumn(2).setPreferredWidth(400);
+
+        JScrollPane scrollPane = new JScrollPane(tableKost);
+        scrollPane.setBorder(new LineBorder(BORDER_COLOR, 1));
+        scrollPane.getViewport().setBackground(Color.WHITE);
+
+        tableContainer.add(scrollPane, BorderLayout.CENTER);
+
+        return tableContainer;
+    }
+
+    private JButton createStyledButton(String text, Color bg, Color hoverBg, boolean isFilled) {
+        JButton btn = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                Color currentBg = getModel().isRollover() ? hoverBg : bg;
+                g2.setColor(currentBg);
+                
+                if (isFilled) {
+                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
+                } else {
+                    g2.setColor(Color.WHITE);
+                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
+                    g2.setColor(BORDER_COLOR);
+                    g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 8, 8);
+                }
+                g2.dispose();
+                super.paintComponent(g);
             }
+        };
 
-            kost.tambahKamar(new Kamar(id, nomor, harga, status));
-            refreshTable();
-            bersihkanForm();
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btn.setForeground(isFilled ? Color.WHITE : TEXT_MED);
+        btn.setPreferredSize(new Dimension(btn.getPreferredSize().width + 12, 40));
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "ID dan Harga harus berupa angka.");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
+        return btn;
     }
 
-    private void updateKamar() {
-        if (txtId.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Pilih data kamar yang ingin diupdate.");
-            return;
-        }
-
-        try {
-            int id = Integer.parseInt(txtId.getText().trim());
-            Kamar kamar = cariKamarById(id);
-
-            if (kamar == null) {
-                JOptionPane.showMessageDialog(this, "Kamar dengan ID " + id + " tidak ditemukan.");
-                return;
-            }
-
-            kamar.setNomor(FormatUtils.rapikanTeks(txtNomor.getText()));
-            kamar.setHarga(Double.parseDouble(txtHarga.getText().trim()));
-            kamar.setStatus((String) cbStatus.getSelectedItem());
-
-            refreshTable();
-            bersihkanForm();
-            JOptionPane.showMessageDialog(this, "Data kamar berhasil diupdate.");
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Harga harus berupa angka.");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
-    }
-
-    private void hapusKamar() {
-        if (txtId.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Pilih data kamar yang ingin dihapus.");
-            return;
-        }
-
-        int id = Integer.parseInt(txtId.getText().trim());
-        kost.hapusKamar(id);
-        refreshTable();
-        bersihkanForm();
-    }
-
-    private void bersihkanForm() {
-        txtId.setText("");
-        txtNomor.setText("");
-        txtHarga.setText("");
-        cbStatus.setSelectedIndex(0);
-        tableKamar.clearSelection();
-    }
-
-    private Kamar cariKamarById(int id) {
-        for (Kamar kamar : kost.getDaftarKamar()) {
-            if (kamar.getIdKamar() == id) {
-                return kamar;
-            }
-        }
-        return null;
-    }
+    public JTextField getTxtSearch() { return txtSearch; }
+    public JButton getBtnTambah() { return btnTambah; }
+    public JButton getBtnEdit() { return btnEdit; }
+    public JButton getBtnHapus() { return btnHapus; }
+    public JTable getTableKost() { return tableKost; }
+    public DefaultTableModel getTableModel() { return tableModel; }
 }

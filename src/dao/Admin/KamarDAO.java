@@ -1,4 +1,4 @@
-package dao;
+package dao.Admin;
 
 import config.KoneksiDatabase;
 import models.Kamar;
@@ -18,25 +18,23 @@ public class KamarDAO {
     }
 
     public List<Kamar> getAll() {
-
         List<Kamar> list = new ArrayList<>();
-
         String sql = "SELECT * FROM kamar";
 
         try {
-
             PreparedStatement pst = conn.prepareStatement(sql);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-
                 Kamar kamar = new Kamar(
                         rs.getInt("id_kamar"),
+                        rs.getInt("id_kost"),
                         rs.getString("nomor_kamar"),
+                        rs.getString("tipe_kamar"),
+                        rs.getString("fasilitas"),
                         rs.getDouble("harga"),
                         rs.getString("status")
                 );
-
                 list.add(kamar);
             }
 
@@ -51,16 +49,16 @@ public class KamarDAO {
     }
 
     public boolean insert(Kamar kamar) {
-
-        String sql = "INSERT INTO kamar(nomor,harga,status) VALUES(?,?,?)";
+        String sql = "INSERT INTO kamar (id_kost, nomor_kamar, tipe_kamar, fasilitas, harga, status) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
-
             PreparedStatement pst = conn.prepareStatement(sql);
-
-            pst.setString(1, kamar.getNomor());
-            pst.setDouble(2, kamar.getHarga());
-            pst.setString(3, kamar.getStatus());
+            pst.setInt(1, kamar.getIdKost());
+            pst.setString(2, kamar.getNomorKamar());
+            pst.setString(3, kamar.getTipeKamar());
+            pst.setString(4, kamar.getFasilitas());
+            pst.setDouble(5, kamar.getHarga());
+            pst.setString(6, kamar.getStatus());
 
             return pst.executeUpdate() > 0;
 
@@ -72,17 +70,17 @@ public class KamarDAO {
     }
 
     public boolean update(Kamar kamar) {
-
-        String sql = "UPDATE kamar SET nomor=?, harga=?, status=? WHERE id_kamar=?";
+        String sql = "UPDATE kamar SET id_kost=?, nomor_kamar=?, tipe_kamar=?, fasilitas=?, harga=?, status=? WHERE id_kamar=?";
 
         try {
-
             PreparedStatement pst = conn.prepareStatement(sql);
-
-            pst.setString(1, kamar.getNomor());
-            pst.setDouble(2, kamar.getHarga());
-            pst.setString(3, kamar.getStatus());
-            pst.setInt(4, kamar.getIdKamar());
+            pst.setInt(1, kamar.getIdKost());
+            pst.setString(2, kamar.getNomorKamar());
+            pst.setString(3, kamar.getTipeKamar());
+            pst.setString(4, kamar.getFasilitas());
+            pst.setDouble(5, kamar.getHarga());
+            pst.setString(6, kamar.getStatus());
+            pst.setInt(7, kamar.getIdKamar());
 
             return pst.executeUpdate() > 0;
 
@@ -94,13 +92,10 @@ public class KamarDAO {
     }
 
     public boolean delete(int idKamar) {
-
         String sql = "DELETE FROM kamar WHERE id_kamar=?";
 
         try {
-
             PreparedStatement pst = conn.prepareStatement(sql);
-
             pst.setInt(1, idKamar);
 
             return pst.executeUpdate() > 0;
@@ -111,23 +106,23 @@ public class KamarDAO {
 
         return false;
     }
-    
-    public Kamar getById(int idKamar) {
 
+    public Kamar getById(int idKamar) {
         String sql = "SELECT * FROM kamar WHERE id_kamar=?";
 
         try {
-
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1, idKamar);
 
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-
                 return new Kamar(
                         rs.getInt("id_kamar"),
-                        rs.getString("nomor"),
+                        rs.getInt("id_kost"),
+                        rs.getString("nomor_kamar"),
+                        rs.getString("tipe_kamar"),
+                        rs.getString("fasilitas"),
                         rs.getDouble("harga"),
                         rs.getString("status")
                 );
@@ -139,5 +134,4 @@ public class KamarDAO {
 
         return null;
     }
-
 }

@@ -5,11 +5,12 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controllers.Admin.PenghuniController;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-
-// Source Code: Gemini AI
 
 public class DataPenghuniPanel extends JPanel {
 
@@ -31,6 +32,8 @@ public class DataPenghuniPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+        
+        new PenghuniController(this);
     }
 
     private void initComponents() {
@@ -192,8 +195,6 @@ public class DataPenghuniPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
-
         return tableContainer;
     }
 
@@ -230,12 +231,6 @@ public class DataPenghuniPanel extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return btn;
-    }
-
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"P-001", "Budi Santoso", "Kamar 102", "081234567890", "10 Jan 2025", "Aktif"});
-        tableModel.addRow(new Object[]{"P-002", "Siti Aminah", "Kamar 105", "085712345678", "15 Feb 2025", "Aktif"});
-        tableModel.addRow(new Object[]{"P-003", "Rian Hidayat", "Kamar 201", "089987654321", "01 Mar 2025", "Selesai"});
     }
 
     public JTextField getTxtSearch() { return txtSearch; }

@@ -35,7 +35,7 @@ public class LoginController {
         try {
             Connection con = KoneksiDatabase.getConnection();
 
-            String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+            String query = "SELECT u.*, p.id_penghuni FROM users u LEFT JOIN penghuni p ON u.id = p.id_user WHERE u.email = ? AND u.password = ?";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, email);
             pst.setString(2, password);
@@ -44,13 +44,17 @@ public class LoginController {
 
             if (rs.next()) {
                 String role = rs.getString("role");
-                JOptionPane.showMessageDialog(view, "Login berhasil sebagai " + role);
+                String name = rs.getString("name");
+                String emailUser = rs.getString("email");
 
+                JOptionPane.showMessageDialog(view, "Login berhasil sebagai " + role);
                 view.dispose();
+
                 if(role.equals("admin")) {
                     new MainFrameAdmin();
                 } else if(role.equals("penghuni")) {
-                    new MainFramePenghuni();
+                    int idPenghuni = rs.getInt("id_penghuni");
+                    new MainFramePenghuni(idPenghuni, name, emailUser);
                 }
             } else {
                 JOptionPane.showMessageDialog(view, "Email atau password salah");

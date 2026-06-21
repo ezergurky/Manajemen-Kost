@@ -5,6 +5,9 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controllers.Admin.PembayaranController;
+
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -29,6 +32,8 @@ public class PembayaranPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+        
+        new PembayaranController(this);
     }
 
     private void initComponents() {
@@ -190,8 +195,6 @@ public class PembayaranPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
-
         return tableContainer;
     }
 
@@ -228,12 +231,6 @@ public class PembayaranPanel extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return btn;
-    }
-
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"PMB-001", "INV-2026-001", "Budi Santoso", "01 Mei 2026", "Transfer Bank", "Rp 750.000"});
-        tableModel.addRow(new Object[]{"PMB-002", "INV-2026-002", "Siti Aisyah", "05 Mei 2026", "QRIS", "Rp 500.000"});
-        tableModel.addRow(new Object[]{"PMB-003", "INV-2026-003", "Budi Santoso", "10 Apr 2026", "Cash", "Rp 800.000"});
     }
 
     public JTextField getTxtSearch() { return txtSearch; }

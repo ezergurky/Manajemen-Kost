@@ -1,18 +1,20 @@
 package models;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Pembayaran {
     private int idPembayaran;
-    private Date tanggal;
-    private double jumlah;
-    private String status;
+    private int idTagihan;
+    private Date tanggalBayar;
+    private String metode;
+    private double jumlahBayar;
 
-    public Pembayaran(int idPembayaran, Date tanggal, double jumlah, String status) {
+    public Pembayaran(int idPembayaran, int idTagihan, Date tanggalBayar, String metode, double jumlahBayar) {
         this.idPembayaran = idPembayaran;
-        this.tanggal = tanggal;
-        this.jumlah = jumlah;
-        this.status = status;
+        this.idTagihan = idTagihan;
+        this.tanggalBayar = tanggalBayar;
+        this.metode = metode;
+        this.jumlahBayar = jumlahBayar;
     }
 
     public int getIdPembayaran() {
@@ -23,41 +25,45 @@ public class Pembayaran {
         this.idPembayaran = idPembayaran;
     }
 
-    public Date getTanggal() {
-        return tanggal;
+    public int getIdTagihan() {
+        return idTagihan;
     }
 
-    public void setTanggal(Date tanggal) {
-        this.tanggal = tanggal;
+    public void setIdTagihan(int idTagihan) {
+        this.idTagihan = idTagihan;
     }
 
-    public double getJumlah() {
-        return jumlah;
+    public Date getTanggalBayar() {
+        return tanggalBayar;
     }
 
-    public void setJumlah(double jumlah) {
-        this.jumlah = jumlah;
+    public void setTanggalBayar(Date tanggalBayar) {
+        this.tanggalBayar = tanggalBayar;
     }
 
-    public String getStatus() {
-        return status;
+    public String getMetode() {
+        return metode;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setMetode(String metode) {
+        this.metode = metode;
     }
 
-    public void konfirmasi() {
-        status = "Lunas";
-        System.out.println("Pembayaran berhasil dikonfirmasi.");
+    public double getJumlahBayar() {
+        return jumlahBayar;
+    }
+
+    public void setJumlahBayar(double jumlahBayar) {
+        this.jumlahBayar = jumlahBayar;
     }
 
     public void cetakStruk() {
         System.out.println("===== STRUK PEMBAYARAN =====");
         System.out.println("ID Pembayaran : " + idPembayaran);
-        System.out.println("Tanggal       : " + tanggal);
-        System.out.println("Jumlah        : Rp" + jumlah);
-        System.out.println("Status        : " + status);
+        System.out.println("ID Tagihan    : " + idTagihan);
+        System.out.println("Tanggal       : " + tanggalBayar);
+        System.out.println("Metode        : " + metode);
+        System.out.println("Jumlah        : Rp" + jumlahBayar);
         System.out.println("============================");
     }
 
@@ -65,9 +71,10 @@ public class Pembayaran {
     public String toString() {
         return "Pembayaran{" +
                 "idPembayaran=" + idPembayaran +
-                ", tanggal=" + tanggal +
-                ", jumlah=" + jumlah +
-                ", status='" + status + '\'' +
+                ", idTagihan=" + idTagihan +
+                ", tanggalBayar=" + tanggalBayar +
+                ", metode='" + metode + '\'' +
+                ", jumlahBayar=" + jumlahBayar +
                 '}';
     }
 }

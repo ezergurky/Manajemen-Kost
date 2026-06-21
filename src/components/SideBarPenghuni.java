@@ -19,10 +19,15 @@ public class SideBarPenghuni extends JPanel {
     private static final Color BORDER_COLOR = new Color(218, 225, 234);
 
     private final Consumer<String> onNavigate;
+    private final String namaUser;
+    private final String emailUser;
     private NavButton activeNavBtn;
 
-    public SideBarPenghuni(Consumer<String> onNavigate) {
+    public SideBarPenghuni(Consumer<String> onNavigate, String namaUser, String emailUser) {
         this.onNavigate = onNavigate;
+        this.namaUser = namaUser;
+        this.emailUser = emailUser;
+        
         setLayout(null);
         setPreferredSize(new Dimension(230, 700));
         setBackground(BG_SIDEBAR);
@@ -127,7 +132,9 @@ public class SideBarPenghuni extends JPanel {
                 g2.setColor(Color.WHITE);
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 14));
                 FontMetrics fm = g2.getFontMetrics();
-                String init = "P";
+                
+                String init = namaUser != null && !namaUser.isEmpty() ? namaUser.substring(0, 1).toUpperCase() : "P";
+                
                 g2.drawString(init,
                     (36 - fm.stringWidth(init)) / 2,
                     (36 + fm.getAscent() - fm.getDescent()) / 2);
@@ -138,16 +145,16 @@ public class SideBarPenghuni extends JPanel {
         avatar.setBounds(10, 10, 36, 36);
         userCard.add(avatar);
 
-        JLabel userName = new JLabel("Penghuni");
+        JLabel userName = new JLabel(namaUser);
         userName.setFont(new Font("Segoe UI", Font.BOLD, 12));
         userName.setForeground(TEXT_DARK);
-        userName.setBounds(54, 10, 120, 18);
+        userName.setBounds(54, 10, 145, 18);
         userCard.add(userName);
 
-        JLabel userEmail = new JLabel("penghuni@kost.id");
+        JLabel userEmail = new JLabel(emailUser);
         userEmail.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         userEmail.setForeground(TEXT_MED);
-        userEmail.setBounds(54, 28, 150, 14);
+        userEmail.setBounds(54, 28, 145, 14);
         userCard.add(userEmail);
 
         this.add(userCard); 

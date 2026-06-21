@@ -7,8 +7,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class DashboardPenghuniPanel extends JPanel {
+import controllers.Penghuni.DashboardPenghuniController;
 
+public class DashboardPenghuniPanel extends JPanel {
     private static final Color TEAL_PRIMARY = new Color(20, 184, 166);
     private static final Color BG_PANEL     = new Color(240, 244, 248);
     private static final Color TEXT_DARK    = new Color(15, 23, 42);
@@ -19,10 +20,19 @@ public class DashboardPenghuniPanel extends JPanel {
     private JTable tableRiwayatSaya;
     private DefaultTableModel tableModel;
 
-    public DashboardPenghuniPanel() {
+    private JLabel lblKamarValue, lblKamarFooter;
+    private JLabel lblTagihanValue, lblTagihanFooter;
+    private JLabel lblStatusValue, lblStatusFooter;
+
+    private int idPenghuni;
+
+    public DashboardPenghuniPanel(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+
+        new DashboardPenghuniController(this, this.idPenghuni);
     }
 
     private void initComponents() {
@@ -71,9 +81,18 @@ public class DashboardPenghuniPanel extends JPanel {
 
         JPanel cardsContainer = new JPanel(new GridLayout(1, 3, 20, 0));
         cardsContainer.setOpaque(false);
-        cardsContainer.add(createInfoCard("Kamar Saya", "Kamar A01", "Kost Mawar (Bandung)", TEAL_PRIMARY));
-        cardsContainer.add(createInfoCard("Tagihan Bulan Ini", "Rp 750.000", "Bulan: Mei 2026", new Color(239, 68, 68)));
-        cardsContainer.add(createInfoCard("Status Pembayaran", "LUNAS", "Terverifikasi otomatis", new Color(16, 185, 129)));
+
+        lblKamarValue = new JLabel("-");
+        lblKamarFooter = new JLabel("Memuat data...");
+        cardsContainer.add(createInfoCard("Kamar Saya", lblKamarValue, lblKamarFooter, TEAL_PRIMARY));
+
+        lblTagihanValue = new JLabel("Rp 0");
+        lblTagihanFooter = new JLabel("Bulan: -");
+        cardsContainer.add(createInfoCard("Tagihan Bulan Ini", lblTagihanValue, lblTagihanFooter, new Color(239, 68, 68)));
+
+        lblStatusValue = new JLabel("-");
+        lblStatusFooter = new JLabel("Status pembayaran");
+        cardsContainer.add(createInfoCard("Status Pembayaran", lblStatusValue, lblStatusFooter, new Color(16, 185, 129)));
 
         mainContent.add(cardsContainer, gbc);
 
@@ -102,7 +121,7 @@ public class DashboardPenghuniPanel extends JPanel {
         add(mainContent, BorderLayout.CENTER);
     }
 
-    private JPanel createInfoCard(String title, String value, String footer, Color accentColor) {
+    private JPanel createInfoCard(String title, JLabel lblValue, JLabel lblFooter, Color accentColor) {
         JPanel card = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -128,11 +147,9 @@ public class DashboardPenghuniPanel extends JPanel {
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 12));
         lblTitle.setForeground(TEXT_MED);
 
-        JLabel lblValue = new JLabel(value);
         lblValue.setFont(new Font("Segoe UI", Font.BOLD, 22));
         lblValue.setForeground(TEXT_DARK);
 
-        JLabel lblFooter = new JLabel(footer);
         lblFooter.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         lblFooter.setForeground(TEXT_LIGHT);
 
@@ -198,16 +215,16 @@ public class DashboardPenghuniPanel extends JPanel {
 
         container.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
-
         return container;
-    }
-
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"PMB-001", "Mei 2026", "01 Mei 2026", "Transfer Bank", "Rp 750.000"});
-        tableModel.addRow(new Object[]{"PMB-003", "April 2026", "10 Apr 2026", "Cash", "Rp 800.000"});
     }
 
     public JTable getTableRiwayatSaya() { return tableRiwayatSaya; }
     public DefaultTableModel getTableModel() { return tableModel; }
+
+    public JLabel getLblKamarValue() { return lblKamarValue; }
+    public JLabel getLblKamarFooter() { return lblKamarFooter; }
+    public JLabel getLblTagihanValue() { return lblTagihanValue; }
+    public JLabel getLblTagihanFooter() { return lblTagihanFooter; }
+    public JLabel getLblStatusValue() { return lblStatusValue; }
+    public JLabel getLblStatusFooter() { return lblStatusFooter; }
 }

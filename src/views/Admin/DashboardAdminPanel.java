@@ -5,6 +5,9 @@ import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controllers.Admin.DashboardAdminController;
+
 import java.awt.*;
 
 public class DashboardAdminPanel extends JPanel {
@@ -18,10 +21,16 @@ public class DashboardAdminPanel extends JPanel {
     private JTable tableAktivitas;
     private DefaultTableModel tableModel;
 
+    private JLabel lblTotalKamarValue, lblTotalKamarFooter;
+    private JLabel lblTotalPenghuniValue, lblTotalPenghuniFooter;
+    private JLabel lblPendapatanValue, lblPendapatanFooter;
+
     public DashboardAdminPanel() {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+
+        new DashboardAdminController(this);
     }
 
     private void initComponents() {
@@ -70,9 +79,18 @@ public class DashboardAdminPanel extends JPanel {
 
         JPanel cardsContainer = new JPanel(new GridLayout(1, 3, 20, 0));
         cardsContainer.setOpaque(false);
-        cardsContainer.add(createInfoCard("Total Kamar", "12 / 20", "8 Kamar Kosong", TEAL_PRIMARY));
-        cardsContainer.add(createInfoCard("Total Penghuni", "12 Orang", "Semua data aktif", new Color(59, 130, 246))); // Blue accent
-        cardsContainer.add(createInfoCard("Pendapatan Bulan Ini", "Rp 14.200.000", "9 dari 12 sudah bayar", new Color(16, 185, 129))); // Green accent
+
+        lblTotalKamarValue = new JLabel("- / -");
+        lblTotalKamarFooter = new JLabel("Memuat data...");
+        cardsContainer.add(createInfoCard("Total Kamar", lblTotalKamarValue, lblTotalKamarFooter, TEAL_PRIMARY));
+
+        lblTotalPenghuniValue = new JLabel("- Orang");
+        lblTotalPenghuniFooter = new JLabel("Memuat data...");
+        cardsContainer.add(createInfoCard("Total Penghuni Aktif", lblTotalPenghuniValue, lblTotalPenghuniFooter, new Color(59, 130, 246)));
+
+        lblPendapatanValue = new JLabel("Rp 0");
+        lblPendapatanFooter = new JLabel("Bulan ini");
+        cardsContainer.add(createInfoCard("Pendapatan Bulan Ini", lblPendapatanValue, lblPendapatanFooter, new Color(16, 185, 129)));
 
         mainContent.add(cardsContainer, gbc);
 
@@ -101,7 +119,7 @@ public class DashboardAdminPanel extends JPanel {
         add(mainContent, BorderLayout.CENTER);
     }
 
-    private JPanel createInfoCard(String title, String value, String footer, Color accentColor) {
+    private JPanel createInfoCard(String title, JLabel lblValue, JLabel lblFooter, Color accentColor) {
         JPanel card = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
@@ -127,11 +145,9 @@ public class DashboardAdminPanel extends JPanel {
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 12));
         lblTitle.setForeground(TEXT_MED);
 
-        JLabel lblValue = new JLabel(value);
         lblValue.setFont(new Font("Segoe UI", Font.BOLD, 22));
         lblValue.setForeground(TEXT_DARK);
 
-        JLabel lblFooter = new JLabel(footer);
         lblFooter.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         lblFooter.setForeground(TEXT_LIGHT);
 
@@ -143,14 +159,14 @@ public class DashboardAdminPanel extends JPanel {
 
         card.add(textPanel, BorderLayout.CENTER);
         return card;
-    }
+    } 
 
     private JPanel createRecentActivityTable() {
         JPanel container = new JPanel(new BorderLayout());
         container.setOpaque(false);
         container.setBorder(new EmptyBorder(0, 20, 20, 20));
 
-        String[] columns = {"Waktu", "Tipe Aktivitas", "Keterangan", "Nominal"};
+        String[] columns = {"Tanggal", "Tipe Aktivitas", "Keterangan", "Nominal"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -196,23 +212,14 @@ public class DashboardAdminPanel extends JPanel {
 
         container.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyActivities();
-
         return container;
     }
 
-    private void loadDummyActivities() {
-        tableModel.addRow(new Object[]{"Hari ini, 10:24", "Pembayaran Sewa", "Budi Santoso - Kamar 102 (Bulan Juni)", "Rp 800.000"});
-        tableModel.addRow(new Object[]{"Hari ini, 08:11", "Penghuni Baru", "Siti Aminah check-in ke Kamar 105", "-"});
-        tableModel.addRow(new Object[]{"Kemarin, 15:45", "Pembuatan Tagihan", "Tagihan listrik & air bulan Juni berhasil di-generate", "-"});
-        tableModel.addRow(new Object[]{"14 Jun 2026", "Pembayaran Sewa", "Rian Hidayat - Kamar 201 (Pelunasan)", "Rp 1.500.000"});
-    }
-
-    public JTable getTableAktivitas() { 
-        return tableAktivitas; 
-    }
-
-    public DefaultTableModel getTableModel() { 
-        return tableModel;
-    }
+    public DefaultTableModel getTableModel() { return tableModel; }
+    public JLabel getLblTotalKamarValue() { return lblTotalKamarValue; }
+    public JLabel getLblTotalKamarFooter() { return lblTotalKamarFooter; }
+    public JLabel getLblTotalPenghuniValue() { return lblTotalPenghuniValue; }
+    public JLabel getLblTotalPenghuniFooter() { return lblTotalPenghuniFooter; }
+    public JLabel getLblPendapatanValue() { return lblPendapatanValue; }
+    public JLabel getLblPendapatanFooter() { return lblPendapatanFooter; }
 }

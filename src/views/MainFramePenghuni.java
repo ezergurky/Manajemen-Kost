@@ -9,12 +9,20 @@ import java.awt.*;
 public class MainFramePenghuni extends JFrame {
     private CardLayout cardLayout;
     private JPanel contentPanel;
+    private int idPenghuni;
+    private String namaUser;
+    private String emailUser;
 
-    public MainFramePenghuni() {
+    public MainFramePenghuni(int idPenghuni, String namaUser, String emailUser) {
+        this.idPenghuni = idPenghuni;
+        this.namaUser = namaUser;
+        this.emailUser = emailUser;
+
         setTitle("Manajemen Kost — Penghuni");
         setSize(1200, 700);
-        setMinimumSize(new Dimension(1100, 650));
+        setMinimumSize(new Dimension(1000, 650));
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         initComponents();
         setVisible(true);
@@ -23,13 +31,13 @@ public class MainFramePenghuni extends JFrame {
     private void initComponents() {
         JPanel root = new JPanel(new BorderLayout());
 
-        SideBarPenghuni sidebar = new SideBarPenghuni(this::navigateTo);
+        SideBarPenghuni sidebar = new SideBarPenghuni(this::navigateTo, namaUser, emailUser);
         root.add(sidebar, BorderLayout.WEST);
 
         cardLayout   = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        contentPanel.add(new DashboardPenghuniPanel(), "DASH");
+        contentPanel.add(new DashboardPenghuniPanel(idPenghuni), "DASH");
         contentPanel.add(new KamarSayaPanel(),      "ROOM");
         contentPanel.add(new TagihanPanel(), "BILL");
         contentPanel.add(new RiwayatPembayaranPanel(),      "HISTORY");
@@ -43,14 +51,21 @@ public class MainFramePenghuni extends JFrame {
     }
 
     public void navigateTo(String key) {
-        cardLayout.show(contentPanel, key);
+        if (key.equals("LOGOUT")) {
+            logout();
+        } else {
+            cardLayout.show(contentPanel, key);
+        }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-            catch (Exception ignored) {}
-            new MainFrameAdmin();
-        });
+    private void logout() {
+        int confirm = JOptionPane.showConfirmDialog(this, 
+            "Apakah Anda yakin ingin keluar?", "Konfirmasi Logout", 
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new LoginPanel(); 
+        }
     }
 }

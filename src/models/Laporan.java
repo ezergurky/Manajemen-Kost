@@ -18,15 +18,13 @@ public class Laporan {
         this.dataPembayaran = dataPembayaran;
     }
 
-    void generateBulanan() {
+    public void generateBulanan() {
         System.out.println("Membuat laporan bulanan...");
 
         double totalPendapatan = 0;
 
         for (Pembayaran pembayaran : dataPembayaran) {
-            if (pembayaran.getStatus().equalsIgnoreCase("Lunas")) {
-                totalPendapatan += pembayaran.getJumlah();
-            }
+            totalPendapatan += pembayaran.getJumlahBayar();
         }
 
         System.out.println("Total Pendapatan Bulanan : Rp" + totalPendapatan);
@@ -38,9 +36,7 @@ public class Laporan {
         double totalPendapatan = 0;
 
         for (Pembayaran pembayaran : dataPembayaran) {
-            if (pembayaran.getStatus().equalsIgnoreCase("Lunas")) {
-                totalPendapatan += pembayaran.getJumlah();
-            }
+            totalPendapatan += pembayaran.getJumlahBayar();
         }
 
         System.out.println("Total Pendapatan Tahunan : Rp" + totalPendapatan);
