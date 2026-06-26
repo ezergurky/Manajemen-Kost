@@ -1,6 +1,7 @@
 package dao.Admin;
 
 import config.KoneksiDatabase;
+import models.Kamar;
 import models.Kost;
 
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class KostDAO {
 
@@ -26,11 +28,11 @@ public class KostDAO {
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                list.add(new Kost(
-                        rs.getInt("id_kost"),
-                        rs.getString("nama_kost"),
-                        rs.getString("alamat")
-                ));
+                Kost kost = new Kost(rs.getInt("id_kost"), rs.getString("nama_kost"), rs.getString("alamat"));
+                List<Kamar> kamarnya = new KamarDAO().getAll().stream().filter(k -> k.getIdKost() == kost.getIdKost()).collect(Collectors.toList());
+
+                kost.setDaftarKamar(kamarnya);
+                list.add(kost);
             }
 
             rs.close();

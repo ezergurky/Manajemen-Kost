@@ -17,7 +17,7 @@ public class SideBarPenghuni extends JPanel {
     private static final Color TEXT_DARK    = new Color(15, 23, 42);
     private static final Color TEXT_MED     = new Color(71, 85, 105);
     private static final Color BORDER_COLOR = new Color(218, 225, 234);
-
+ 
     private final Consumer<String> onNavigate;
     private final String namaUser;
     private final String emailUser;
@@ -133,8 +133,16 @@ public class SideBarPenghuni extends JPanel {
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 14));
                 FontMetrics fm = g2.getFontMetrics();
                 
-                String init = namaUser != null && !namaUser.isEmpty() ? namaUser.substring(0, 1).toUpperCase() : "P";
-                
+                String init = "P";
+                if(namaUser != null && !namaUser.isEmpty()) {
+                    String[] parts = namaUser.split(" ");
+                    if(parts.length >= 2) {
+                        init = (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+                    } else {
+                        init = namaUser.substring(0, 1).toUpperCase();
+                    }
+                }
+                 
                 g2.drawString(init,
                     (36 - fm.stringWidth(init)) / 2,
                     (36 + fm.getAscent() - fm.getDescent()) / 2);

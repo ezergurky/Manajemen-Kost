@@ -84,6 +84,7 @@ public class SideBarAdmin extends JPanel {
             {"Tagihan",       "BILL"},
             {"Pembayaran",    "PAY"},
             {"Laporan",       "REPORT"},
+            {"Pengaturan",         "SETTINGS"},
         };
 
         int navY = 84;

@@ -22,11 +22,9 @@ public class KoneksiDatabase {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("Koneksi ke Database berhasil");
-                System.out.println(connection);
             }
         } catch (ClassNotFoundException e) {
             System.out.println("Driver MySQL tidak ditemukan: " + e.getMessage());
-            System.out.println(connection);
         } catch (SQLException e) {
             System.out.println("Gagal koneksi ke Database: " + e.getMessage());
         }
