@@ -71,7 +71,7 @@ public class KamarDAO {
 
     public boolean update(Kamar kamar) {
         String sql = "UPDATE kamar SET id_kost=?, nomor_kamar=?, tipe_kamar=?, fasilitas=?, harga=?, status=? WHERE id_kamar=?";
-
+ 
         try {
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setInt(1, kamar.getIdKost());
