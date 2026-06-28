@@ -1,12 +1,46 @@
 package models;
 
-public class Penghuni extends User {
-    private Kamar kamarSewa;
-    private String status;
+import java.util.List;
 
-    public Penghuni(int id, String nama, String email, String password, String status) {
-        super(id, nama, email, password);
-        this.status = status;
+import dao.Penghuni.TagihanDAO;
+import interfaces.PembayaranService;
+import views.MainFramePenghuni;
+
+public class Penghuni extends User {
+    private int idPenghuni;
+    private String nik;
+    private String noHp;
+    private Kamar kamarSewa;
+
+    public Penghuni(int idUser, String nama, String email, String password, String username, int idPenghuni, String nik, String noHp) {
+        super(idUser, nama, email, password, username);
+        this.idPenghuni = idPenghuni;
+        this.nik = nik;
+        this.noHp = noHp;
+    }
+
+    public int getIdPenghuni() {
+        return idPenghuni;
+    }
+
+    public void setIdPenghuni(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
+    }
+
+    public String getNik() {
+        return nik;
+    }
+
+    public void setNik(String nik) {
+        this.nik = nik;
+    }
+
+    public String getNoHp() {
+        return noHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
     }
 
     public Kamar getKamarSewa() {
@@ -17,24 +51,17 @@ public class Penghuni extends User {
         this.kamarSewa = kamarSewa;
     }
 
-    public String getStatus() {
-        return status;
+    public List<Tagihan> lihatTagihan(TagihanDAO dao) {
+        return dao.getTagihanByPenghuni(this.idPenghuni);
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void lihatTagihan() {
-        System.out.println("Menampilkan tagihan penghuni...");
-    }
-
-    public void bayar() {
-        System.out.println("Melakukan pembayaran tagihan...");
+    public boolean bayar(Tagihan tagihan, PembayaranService metodePembayaran) {
+        double totalTagihan = tagihan.hitungTotal(true);
+        return metodePembayaran.prosesPembayaran(tagihan.getIdTagihan(), totalTagihan);
     }
 
     @Override
     public void displayDashboard() {
-        System.out.println("Dashboard Penghuni");
+        new MainFramePenghuni(this.getIdPenghuni(), this.getNama(), super.getEmail()).setVisible(true);
     }
 }
