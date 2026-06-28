@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 
+import controllers.Penghuni.KamarSayaController;
+
 public class KamarSayaPanel extends JPanel {
     private static final Color BG_PANEL     = new Color(240, 244, 248);
     private static final Color TEXT_DARK    = new Color(15, 23, 42);
@@ -14,10 +16,17 @@ public class KamarSayaPanel extends JPanel {
     private JLabel lblTanggalMulai, lblTanggalSelesai, lblStatusKontrak;
     private JTextArea txtFasilitas;
 
-    public KamarSayaPanel() {
+    private int idPenghuni;
+    private KamarSayaController controller;
+
+    public KamarSayaPanel(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
+
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+
+        this.controller = new KamarSayaController(this, this.idPenghuni);
     }
 
     private void initComponents() {
@@ -89,10 +98,10 @@ public class KamarSayaPanel extends JPanel {
         cKamar.insets = new Insets(12, 0, 16, 0);
         detailKamarCard.add(sep1, cKamar);
 
-        lblNomorKamar = createDetailRow(detailKamarCard, "Nomor Kamar", "Kamar A01", 2);
-        lblHarga = createDetailRow(detailKamarCard, "Harga Sewa / Bulan", "Rp 750.000", 3);
-        lblNamaKost = createDetailRow(detailKamarCard, "Nama Properti", "Kost Mawar", 4);
-        lblAlamatKost = createDetailRow(detailKamarCard, "Alamat Kost", "Jl. Mawar No. 10 Bandung", 5);
+        lblNomorKamar = createDetailRow(detailKamarCard, "Nomor Kamar", "-", 2);
+        lblHarga = createDetailRow(detailKamarCard, "Harga Sewa / Bulan", "-", 3);
+        lblNamaKost = createDetailRow(detailKamarCard, "Nama Properti", "-", 4);
+        lblAlamatKost = createDetailRow(detailKamarCard, "Alamat Kost", "-", 5);
 
         JLabel lblFasilitasTitle = new JLabel("Fasilitas Kamar:");
         lblFasilitasTitle.setFont(new Font("Segoe UI", Font.BOLD, 12));
@@ -101,17 +110,14 @@ public class KamarSayaPanel extends JPanel {
         cKamar.insets = new Insets(12, 0, 6, 0);
         detailKamarCard.add(lblFasilitasTitle, cKamar);
 
-        txtFasilitas = new JTextArea("• Kamar Mandi Dalam\n• Kasur Springbed\n• Lemari Pakaian\n• Free Wi-Fi");
+        txtFasilitas = new JTextArea("Memuat data...");
         txtFasilitas.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         txtFasilitas.setForeground(TEXT_DARK);
         txtFasilitas.setEditable(false);
         txtFasilitas.setOpaque(false);
         txtFasilitas.setLineWrap(true);
         txtFasilitas.setWrapStyleWord(true);
-        cKamar.gridy = 7;
-        cKamar.weighty = 1.0;
-        cKamar.fill = GridBagConstraints.BOTH;
-        cKamar.insets = new Insets(0, 4, 0, 0);
+        cKamar.gridy = 7; cKamar.weighty = 1.0; cKamar.fill = GridBagConstraints.BOTH; cKamar.insets = new Insets(0, 4, 0, 0);
         detailKamarCard.add(txtFasilitas, cKamar);
 
         mainContent.add(detailKamarCard, gbc);
@@ -144,9 +150,9 @@ public class KamarSayaPanel extends JPanel {
         cKontrak.insets = new Insets(12, 0, 16, 0);
         kontrakCard.add(sep2, cKontrak);
 
-        lblTanggalMulai = createDetailRow(kontrakCard, "Tanggal Mulai Sewa", "01 Januari 2026", 2);
-        lblTanggalSelesai = createDetailRow(kontrakCard, "Tanggal Selesai Sewa", "31 Desember 2026", 3);
-        lblStatusKontrak = createDetailRow(kontrakCard, "Status Kontrak", "Aktif", 4);
+        lblTanggalMulai = createDetailRow(kontrakCard, "Tanggal Mulai Sewa", "-", 2);
+        lblTanggalSelesai = createDetailRow(kontrakCard, "Tanggal Selesai Sewa", "-", 3);
+        lblStatusKontrak = createDetailRow(kontrakCard, "Status Kontrak", "-", 4);
 
         cKontrak.gridy = 5;
         cKontrak.weighty = 1.0;
@@ -182,6 +188,12 @@ public class KamarSayaPanel extends JPanel {
         container.add(rowPanel, gbc);
 
         return lblValue;
+    }
+
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.loadData();
+        }
     }
 
     public JLabel getLblNomorKamar() { return lblNomorKamar; }
