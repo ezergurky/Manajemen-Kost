@@ -4,16 +4,9 @@ import java.util.List;
 
 
 public interface CRUDRepository<T, ID> {
-
-    void tambah(T data);
-
-    boolean update(T data);
-
-
-    boolean hapus(ID id);
-
-    T cariById(ID id);
-
-
-    List<T> tampilkanSemua();
+    public void tambah(T data);
+    public boolean update(T data);
+    public boolean hapus(ID id);
+    public T cariById(ID id);
+    public List<T> tampilkanSemua();
 }
