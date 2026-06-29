@@ -22,7 +22,7 @@ public class DashboardPenghuniController {
         loadRecentActivities();
     }
 
-    private void loadStatistics() {
+    public void loadStatistics() {
         Object[] infoKamar = dao.getInfoKamar(idPenghuni);
         if (infoKamar != null) {
             view.getLblKamarValue().setText("Kamar " + infoKamar[0].toString());
@@ -60,7 +60,7 @@ public class DashboardPenghuniController {
         }
     }
 
-    private void loadRecentActivities() {
+    public void loadRecentActivities() {
         DefaultTableModel model = view.getTableModel();
         model.setRowCount(0);
 

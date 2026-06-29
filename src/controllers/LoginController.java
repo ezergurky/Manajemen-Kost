@@ -5,11 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
-import views.MainFrameAdmin;
-import views.MainFramePenghuni;
 import views.LoginPanel;
 
 import config.KoneksiDatabase;
+import models.Admin;
+import models.Penghuni;
 
 public class LoginController {
     private final LoginPanel view;
@@ -46,15 +46,18 @@ public class LoginController {
                 String role = rs.getString("role");
                 String name = rs.getString("name");
                 String emailUser = rs.getString("email");
+                String username = rs.getString("username");
 
                 JOptionPane.showMessageDialog(view, "Login berhasil sebagai " + role);
                 view.dispose();
 
-                if(role.equals("admin")) {
-                    new MainFrameAdmin();
-                } else if(role.equals("penghuni")) {
+                if (role.equals("admin")) {
+                    Admin admin = new Admin(rs.getInt("id"), name, emailUser, password, username);
+                    admin.displayDashboard(); 
+                } else if (role.equals("penghuni")) {
                     int idPenghuni = rs.getInt("id_penghuni");
-                    new MainFramePenghuni(idPenghuni, name, emailUser);
+                    Penghuni penghuni = new Penghuni(rs.getInt("id"), name, emailUser, password, username, idPenghuni, "", "");
+                    penghuni.displayDashboard(); 
                 }
             } else {
                 JOptionPane.showMessageDialog(view, "Email atau password salah");
@@ -62,7 +65,6 @@ public class LoginController {
 
             rs.close();
             pst.close();
-            con.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Error: " + e.getMessage());
         }

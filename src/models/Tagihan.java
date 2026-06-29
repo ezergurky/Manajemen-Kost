@@ -1,6 +1,6 @@
 package models;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Tagihan {
     private int idTagihan;
@@ -11,6 +11,8 @@ public class Tagihan {
     private double jumlah;
     private double denda;
     private String status;
+
+    private Penghuni penghuni;
 
     public Tagihan(int idTagihan, int idPenghuni, String bulan, int tahun, Date jatuhTempo, double jumlah, double denda, String status) {
         this.idTagihan = idTagihan;
@@ -23,71 +25,58 @@ public class Tagihan {
         this.status = status;
     }
 
-    public int getIdTagihan() {
-        return idTagihan;
-    }
-
-    public void setIdTagihan(int idTagihan) {
-        this.idTagihan = idTagihan;
-    }
-
-    public int getIdPenghuni() {
-        return idPenghuni;
-    }
-
-    public void setIdPenghuni(int idPenghuni) {
-        this.idPenghuni = idPenghuni;
-    }
-
-    public String getBulan() {
-        return bulan;
-    }
-
-    public void setBulan(String bulan) {
-        this.bulan = bulan;
-    }
-
-    public int getTahun() {
-        return tahun;
-    }
-
-    public void setTahun(int tahun) {
-        this.tahun = tahun;
-    }
-
-    public Date getJatuhTempo() {
-        return jatuhTempo;
-    }
-
-    public void setJatuhTempo(Date jatuhTempo) {
-        this.jatuhTempo = jatuhTempo;
-    }
-
-    public double getJumlah() {
-        return jumlah;
-    }
-
-    public void setJumlah(double jumlah) {
-        this.jumlah = jumlah;
-    }
-
-    public double getDenda() {
-        return denda;
-    }
-
-    public void setDenda(double denda) {
-        this.denda = denda;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public Tagihan(int idTagihan, int idPenghuni, String bulan, int tahun, Date jatuhTempo, double jumlah, String status) {
+        this(idTagihan, idPenghuni, bulan, tahun, jatuhTempo, jumlah, 0.0, status);
     }
 
     public double hitungTotal() {
-        return this.jumlah + this.denda;
+        return this.jumlah; 
+    }
+
+    public double hitungTotal(boolean tambahDenda) {
+        if (tambahDenda) {
+            return this.jumlah + this.denda;
+        }
+        return this.jumlah;
+    }
+
+    public int getIdTagihan() { 
+        return idTagihan; 
+    }
+
+    public int getIdPenghuni() { 
+        return idPenghuni; 
+    }
+
+    public String getBulan() { 
+        return bulan; 
+    }
+
+    public int getTahun() { 
+        return tahun; 
+    }
+
+    public Date getJatuhTempo() { 
+        return jatuhTempo; 
+    }
+
+    public double getJumlah() { 
+        return jumlah; 
+    }
+
+    public double getDenda() { 
+        return denda; 
+    }
+
+    public String getStatus() { 
+        return status; 
+    }
+
+    public Penghuni getPenghuni() { 
+        return penghuni; 
+    }
+
+    public void setPenghuni(Penghuni penghuni) {
+        this.penghuni = penghuni; 
     }
 }

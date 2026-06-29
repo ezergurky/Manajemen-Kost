@@ -1,6 +1,7 @@
 package interfaces;
 
 public interface PembayaranService {
-    public void prosesPembayaran();
-    public boolean validasiPembayaran();
+    String getNamaMetode();
+    double hitungTotalBayar(double tagihanAwal);
+    boolean prosesPembayaran(int idTagihan, double tagihanAwal);
 }

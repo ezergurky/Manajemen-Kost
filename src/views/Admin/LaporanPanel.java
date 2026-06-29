@@ -24,13 +24,14 @@ public class LaporanPanel extends JPanel {
     private JTable tableLaporan;
     private DefaultTableModel tableModel;
     private JLabel lblTotalPendapatan, lblTotalTunggakan;
+    private LaporanController controller;
 
     public LaporanPanel() {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
         
-        new LaporanController(this);
+        this.controller = new LaporanController(this);
     }
 
     private void initComponents() {
@@ -269,6 +270,12 @@ public class LaporanPanel extends JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return btn;
+    }
+
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.refreshData();
+        }
     }
 
     public JComboBox<String> getCbBulan() { return cbBulan; }

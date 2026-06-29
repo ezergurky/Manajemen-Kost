@@ -9,6 +9,8 @@ public class Pembayaran {
     private String metode;
     private double jumlahBayar;
 
+    private Tagihan tagihan;
+
     public Pembayaran(int idPembayaran, int idTagihan, Date tanggalBayar, String metode, double jumlahBayar) {
         this.idPembayaran = idPembayaran;
         this.idTagihan = idTagihan;
@@ -17,64 +19,31 @@ public class Pembayaran {
         this.jumlahBayar = jumlahBayar;
     }
 
-    public int getIdPembayaran() {
-        return idPembayaran;
+    public int getIdPembayaran() { 
+        return idPembayaran; 
     }
 
-    public void setIdPembayaran(int idPembayaran) {
-        this.idPembayaran = idPembayaran;
+    public int getIdTagihan() { 
+        return idTagihan; 
+    }
+    
+    public Date getTanggalBayar() { 
+        return tanggalBayar; 
     }
 
-    public int getIdTagihan() {
-        return idTagihan;
-    }
-
-    public void setIdTagihan(int idTagihan) {
-        this.idTagihan = idTagihan;
-    }
-
-    public Date getTanggalBayar() {
-        return tanggalBayar;
-    }
-
-    public void setTanggalBayar(Date tanggalBayar) {
-        this.tanggalBayar = tanggalBayar;
-    }
-
-    public String getMetode() {
-        return metode;
-    }
-
-    public void setMetode(String metode) {
-        this.metode = metode;
+    public String getMetode() { 
+        return metode; 
     }
 
     public double getJumlahBayar() {
-        return jumlahBayar;
+        return jumlahBayar; 
     }
 
-    public void setJumlahBayar(double jumlahBayar) {
-        this.jumlahBayar = jumlahBayar;
+    public Tagihan getTagihan() { 
+        return tagihan; 
     }
 
-    public void cetakStruk() {
-        System.out.println("===== STRUK PEMBAYARAN =====");
-        System.out.println("ID Pembayaran : " + idPembayaran);
-        System.out.println("ID Tagihan    : " + idTagihan);
-        System.out.println("Tanggal       : " + tanggalBayar);
-        System.out.println("Metode        : " + metode);
-        System.out.println("Jumlah        : Rp" + jumlahBayar);
-        System.out.println("============================");
-    }
-
-    @Override
-    public String toString() {
-        return "Pembayaran{" +
-                "idPembayaran=" + idPembayaran +
-                ", idTagihan=" + idTagihan +
-                ", tanggalBayar=" + tanggalBayar +
-                ", metode='" + metode + '\'' +
-                ", jumlahBayar=" + jumlahBayar +
-                '}';
+    public void setTagihan(Tagihan tagihan) {
+        this.tagihan = tagihan;
     }
 }

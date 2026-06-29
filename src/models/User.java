@@ -1,17 +1,22 @@
 package models;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import views.LoginPanel;
+
 public abstract class User {
     protected int id;
     protected String nama;
-    protected String statusAkun;
+    protected String username;
     private String email;
     private String password;
 
-    public User(int id, String nama, String email, String password) {
+    public User(int id, String nama, String email, String password, String username) {
         this.id = id;
         this.nama = nama;
         this.email = email;
         this.password = password;
+        this.username = username;
     }
     
     public String getNama() {
@@ -22,17 +27,31 @@ public abstract class User {
         this.nama = nama;
     }
 
-    public boolean login() {
-        statusAkun = "Online";
-        return true;
+    public String getEmail() {
+        return email;
     }
 
-    public void logout() {
-        statusAkun = "Offline";
+    public String getUsername() {
+        return username;
     }
 
-    protected boolean validasiSesi() {
-        return statusAkun.equals("Online");
+    public int getId() {
+        return id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void logout(JFrame frame) {
+        int confirm = JOptionPane.showConfirmDialog(frame, 
+            "Apakah Anda yakin ingin keluar?", "Konfirmasi Logout", 
+            JOptionPane.YES_NO_OPTION);
+            
+        if (confirm == JOptionPane.YES_OPTION) {
+            frame.dispose(); 
+            new LoginPanel();
+        } 
     }
 
     public abstract void displayDashboard();

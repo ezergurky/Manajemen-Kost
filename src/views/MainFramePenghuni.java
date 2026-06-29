@@ -2,6 +2,7 @@ package views;
 
 import components.SideBarPenghuni;
 import views.Penghuni.*;
+import models.Penghuni;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +13,12 @@ public class MainFramePenghuni extends JFrame {
     private int idPenghuni;
     private String namaUser;
     private String emailUser;
+
+    private DashboardPenghuniPanel dashPanel;
+    private KamarSayaPanel kamarPanel;
+    private TagihanPanel tagihanPanel;
+    private RiwayatPembayaranPanel riwayatPanel;
+    private ProfilePanel profilePanel;
 
     public MainFramePenghuni(int idPenghuni, String namaUser, String emailUser) {
         this.idPenghuni = idPenghuni;
@@ -37,12 +44,18 @@ public class MainFramePenghuni extends JFrame {
         cardLayout   = new CardLayout();
         contentPanel = new JPanel(cardLayout);
 
-        contentPanel.add(new DashboardPenghuniPanel(idPenghuni), "DASH");
-        contentPanel.add(new KamarSayaPanel(),      "ROOM");
-        contentPanel.add(new TagihanPanel(), "BILL");
-        contentPanel.add(new RiwayatPembayaranPanel(),      "HISTORY");
-        contentPanel.add(new ProfilePanel(),      "PROFILE");
-        contentPanel.add(new PengaturanPanel(),      "SETTINGS");
+        dashPanel = new DashboardPenghuniPanel(idPenghuni);
+        kamarPanel = new KamarSayaPanel(idPenghuni);
+        tagihanPanel = new TagihanPanel(idPenghuni);
+        riwayatPanel = new RiwayatPembayaranPanel(idPenghuni);
+        profilePanel = new ProfilePanel(idPenghuni);
+
+        contentPanel.add(dashPanel, "DASH");
+        contentPanel.add(kamarPanel, "ROOM");
+        contentPanel.add(tagihanPanel, "BILL");
+        contentPanel.add(riwayatPanel, "HISTORY");
+        contentPanel.add(profilePanel, "PROFILE");
+        contentPanel.add(new PengaturanPanel("Penghuni"), "SETTINGS");
 
         root.add(contentPanel, BorderLayout.CENTER);
         setContentPane(root);
@@ -52,20 +65,20 @@ public class MainFramePenghuni extends JFrame {
 
     public void navigateTo(String key) {
         if (key.equals("LOGOUT")) {
-            logout();
+            Penghuni penghuni = new Penghuni(0, namaUser, emailUser, "", "", idPenghuni, "", "");
+            penghuni.logout(this);
         } else {
-            cardLayout.show(contentPanel, key);
-        }
-    }
+            if (key.equals("DASH") && dashPanel != null) {
+                dashPanel.refreshData();
+            } else if (key.equals("ROOM") && kamarPanel != null) {
+                kamarPanel.refreshData();
+            } else if (key.equals("BILL") && tagihanPanel != null) {
+                tagihanPanel.refreshData();
+            } else if (key.equals("HISTORY") && riwayatPanel != null) {
+                riwayatPanel.refreshData();
+            }
 
-    private void logout() {
-        int confirm = JOptionPane.showConfirmDialog(this, 
-            "Apakah Anda yakin ingin keluar?", "Konfirmasi Logout", 
-            JOptionPane.YES_NO_OPTION);
-            
-        if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            new LoginPanel(); 
+            cardLayout.show(contentPanel, key);
         }
     }
 }

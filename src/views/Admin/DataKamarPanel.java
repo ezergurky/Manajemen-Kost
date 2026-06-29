@@ -28,12 +28,16 @@ public class DataKamarPanel extends JPanel {
     private JTable tableKamar;
     private DefaultTableModel tableModel;
 
+    private KamarController controller;
+    
+    private JLabel lblStatistik;
+ 
     public DataKamarPanel() {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
 
-        new KamarController(this);
+        this.controller = new KamarController(this);
     }
 
     private void initComponents() {
@@ -147,6 +151,22 @@ public class DataKamarPanel extends JPanel {
         tableContainer.setBackground(Color.WHITE);
         tableContainer.setBorder(new EmptyBorder(0, 20, 20, 20));
 
+        JPanel tableHeaderInfo = new JPanel(new BorderLayout());
+        tableHeaderInfo.setOpaque(false);
+        tableHeaderInfo.setBorder(new EmptyBorder(0, 0, 10, 0));
+
+        JLabel titleDaftar = new JLabel("Daftar Properti Kamar");
+        titleDaftar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        titleDaftar.setForeground(TEXT_DARK);
+        tableHeaderInfo.add(titleDaftar, BorderLayout.WEST);
+
+        lblStatistik = new JLabel("Memuat Statistik...");
+        lblStatistik.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        lblStatistik.setForeground(TEAL_PRIMARY);
+        tableHeaderInfo.add(lblStatistik, BorderLayout.EAST);
+
+        tableContainer.add(tableHeaderInfo, BorderLayout.NORTH);
+
         String[] columns = {"Nomor Kamar", "Tipe Kamar", "Fasilitas", "Harga / Bulan", "Status"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
@@ -232,27 +252,17 @@ public class DataKamarPanel extends JPanel {
         return btn;
     }
 
-    public JTextField getTxtSearch() { 
-        return txtSearch; 
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.loadTable();
+        }
     }
 
-    public JButton getBtnTambah() {
-        return btnTambah; 
-    }
-
-    public JButton getBtnEdit() { 
-        return btnEdit; 
-    }
-
-    public JButton getBtnHapus() { 
-        return btnHapus; 
-    }
-
-    public JTable getTableKamar() { 
-        return tableKamar; 
-    }
-
-    public DefaultTableModel getTableModel() { 
-        return tableModel; 
-    }
+    public JTextField getTxtSearch() { return txtSearch; }
+    public JButton getBtnTambah() { return btnTambah; }
+    public JButton getBtnEdit() { return btnEdit; }
+    public JButton getBtnHapus() { return btnHapus; }
+    public JTable getTableKamar() { return tableKamar; }
+    public DefaultTableModel getTableModel() { return tableModel; }
+    public JLabel getLblStatistik() { return lblStatistik; }
 }

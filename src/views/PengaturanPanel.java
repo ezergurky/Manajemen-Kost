@@ -1,4 +1,4 @@
-package views.Penghuni;
+package views;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -16,11 +16,17 @@ public class PengaturanPanel extends JPanel {
 
     private JPasswordField txtPasswordLama, txtPasswordBaru, txtKonfirmasiPassword;
     private JButton btnSimpanPassword;
+    
+    private final String role;
 
-    public PengaturanPanel() {
+    public PengaturanPanel(String role) {
+        this.role = role;
+        
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+        
+        new controllers.PengaturanController(this);
     }
 
     private void initComponents() {
@@ -34,11 +40,11 @@ public class PengaturanPanel extends JPanel {
         titleContainer.setOpaque(false);
         titleContainer.setLayout(new BoxLayout(titleContainer, BoxLayout.Y_AXIS));
 
-        JLabel titleLabel = new JLabel("Pengaturan");
+        JLabel titleLabel = new JLabel("Pengaturan Sistem");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         titleLabel.setForeground(TEXT_DARK);
 
-        JLabel subLabel = new JLabel("Konfigurasi keamanan akun, perbarui kata sandi, dan preferensi privasi Anda");
+        JLabel subLabel = new JLabel("Konfigurasi keamanan akun " + role.toLowerCase() + " dan preferensi tampilan aplikasi");
         subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         subLabel.setForeground(TEXT_MED);
 
@@ -64,12 +70,14 @@ public class PengaturanPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTH;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
 
-        JPanel settingsCard = new JPanel(new GridBagLayout());
-        settingsCard.setBackground(Color.WHITE);
-        settingsCard.setBorder(new CompoundBorder(
+        JPanel securityCard = new JPanel(new GridBagLayout());
+        securityCard.setBackground(Color.WHITE);
+        securityCard.setBorder(new CompoundBorder(
                 new LineBorder(BORDER_COLOR, 1, true),
                 new EmptyBorder(28, 28, 28, 28)
         ));
@@ -81,20 +89,21 @@ public class PengaturanPanel extends JPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1.0;
 
-        JLabel titleSandi = new JLabel("Perbarui Kata Sandi");
+        String titleRole = role.equalsIgnoreCase("admin") ? "Administrator" : "Penghuni";
+        JLabel titleSandi = new JLabel("Perbarui Kata Sandi " + titleRole);
         titleSandi.setFont(new Font("Segoe UI", Font.BOLD, 14));
         titleSandi.setForeground(TEXT_DARK);
-        settingsCard.add(titleSandi, c);
+        securityCard.add(titleSandi, c);
 
         JSeparator sep = new JSeparator();
         sep.setForeground(BORDER_COLOR);
         c.gridy = 1;
         c.insets = new Insets(8, 0, 20, 0);
-        settingsCard.add(sep, c);
+        securityCard.add(sep, c);
 
-        txtPasswordLama = createPasswordFieldRow(settingsCard, "Kata Sandi Sekarang", 2);
-        txtPasswordBaru = createPasswordFieldRow(settingsCard, "Kata Sandi Baru", 4);
-        txtKonfirmasiPassword = createPasswordFieldRow(settingsCard, "Konfirmasi Kata Sandi Baru", 6);
+        txtPasswordLama = createPasswordFieldRow(securityCard, "Kata Sandi Sekarang", 2);
+        txtPasswordBaru = createPasswordFieldRow(securityCard, "Kata Sandi Baru", 4);
+        txtKonfirmasiPassword = createPasswordFieldRow(securityCard, "Konfirmasi Kata Sandi Baru", 6);
 
         btnSimpanPassword = new JButton("Simpan Perubahan") {
             @Override
@@ -114,21 +123,19 @@ public class PengaturanPanel extends JPanel {
         btnSimpanPassword.setOpaque(false);
         btnSimpanPassword.setContentAreaFilled(false);
         btnSimpanPassword.setBorderPainted(false);
-        btnSimpanPassword.setFocusPainted(false);
         btnSimpanPassword.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         c.gridy = 8;
         c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.WEST;
         c.insets = new Insets(12, 0, 0, 0);
-        settingsCard.add(btnSimpanPassword, c);
+        securityCard.add(btnSimpanPassword, c);
 
         c.gridy = 9;
         c.weighty = 1.0;
         c.fill = GridBagConstraints.BOTH;
-        settingsCard.add(new JPanel() {{ setOpaque(false); }}, c);
+        securityCard.add(new JPanel() {{ setOpaque(false); }}, c);
 
-        mainContent.add(settingsCard, gbc);
+        mainContent.add(securityCard, gbc);
         add(mainContent, BorderLayout.CENTER);
     }
 
@@ -170,4 +177,5 @@ public class PengaturanPanel extends JPanel {
     public JPasswordField getTxtPasswordBaru() { return txtPasswordBaru; }
     public JPasswordField getTxtKonfirmasiPassword() { return txtKonfirmasiPassword; }
     public JButton getBtnSimpanPassword() { return btnSimpanPassword; }
+    public String getRole() { return role; }
 }

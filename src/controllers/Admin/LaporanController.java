@@ -2,12 +2,15 @@ package controllers.Admin;
 
 import utils.FormatUtils;
 import views.Admin.LaporanPanel;
-
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-
 import dao.Admin.LaporanDAO;
+import dao.Admin.PembayaranDAO;
+import models.Laporan;
+import models.Pembayaran;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.util.List;
 
 public class LaporanController {
@@ -26,6 +29,10 @@ public class LaporanController {
     private void initAction() {
         view.getBtnFilter().addActionListener(e -> applyFilter());
         view.getBtnExportPDF().addActionListener(e -> exportPDF());
+    }
+
+    public void refreshData() {
+        applyFilter(); 
     }
 
     private void applyFilter() {
@@ -47,7 +54,11 @@ public class LaporanController {
             String status = "-";
             if (rowData[4] != null) {
                 String rawStatus = rowData[4].toString();
-                status = rawStatus.substring(0, 1).toUpperCase() + rawStatus.substring(1).toLowerCase();
+                if (rawStatus.equalsIgnoreCase("belum") && pemasukan > 0) {
+                    status = "Menunggu Verifikasi";
+                } else {
+                    status = rawStatus.substring(0, 1).toUpperCase() + rawStatus.substring(1).toLowerCase();
+                }
             }
 
             Object[] row = {
@@ -60,14 +71,34 @@ public class LaporanController {
             model.addRow(row);
         }
 
-        double totalPendapatan = dao.getTotalPendapatan(bulan, tahun);
+        PembayaranDAO pembayaranDAO = new PembayaranDAO();
+        List<Pembayaran> semuaPembayaran = pembayaranDAO.getAllPembayaran();
+        Laporan laporanObj = new Laporan(semuaPembayaran);
+
+        double totalPendapatan = laporanObj.generateLaporanPendapatan(bulan, tahun);
         double totalTunggakan = dao.getTotalTunggakan(bulan, tahun);
+
+        laporanObj.cetakLogTransaksi();
 
         view.getLblTotalPendapatan().setText(FormatUtils.formatRupiah(totalPendapatan));
         view.getLblTotalTunggakan().setText(FormatUtils.formatRupiah(totalTunggakan));
     }
 
     private void exportPDF() {
-        JOptionPane.showMessageDialog(view, "Fitur Ekspor PDF Laporan belum dibuat.");
+        String bulan = view.getCbBulan().getSelectedItem().toString();
+        String tahun = view.getCbTahun().getSelectedItem().toString();
+        
+        MessageFormat header = new MessageFormat("Laporan Keuangan Kost - Periode: " + bulan + " " + tahun);
+        MessageFormat footer = new MessageFormat("Halaman {0}");
+
+        try {
+            boolean complete = view.getTableLaporan().print(JTable.PrintMode.FIT_WIDTH, header, footer);
+            
+            if (complete) {
+                JOptionPane.showMessageDialog(view, "Dokumen berhasil diproses!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (PrinterException pe) {
+            JOptionPane.showMessageDialog(view, "Gagal memproses dokumen: " + pe.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

@@ -25,12 +25,14 @@ public class DashboardAdminPanel extends JPanel {
     private JLabel lblTotalPenghuniValue, lblTotalPenghuniFooter;
     private JLabel lblPendapatanValue, lblPendapatanFooter;
 
+    private DashboardAdminController controller;
+
     public DashboardAdminPanel() {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
 
-        new DashboardAdminController(this);
+        this.controller = new DashboardAdminController(this);
     }
 
     private void initComponents() {
@@ -213,6 +215,13 @@ public class DashboardAdminPanel extends JPanel {
         container.add(scrollPane, BorderLayout.CENTER);
 
         return container;
+    }
+
+    public void refreshData() {
+        if(this.controller != null) {
+            this.controller.loadStatistics();
+            this.controller.loadRecentActivities();
+        }
     }
 
     public DefaultTableModel getTableModel() { return tableModel; }

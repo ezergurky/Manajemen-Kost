@@ -1,23 +1,26 @@
-package dao.Admin;
+package dao.Penghuni;
 
 import config.KoneksiDatabase;
 import models.Pembayaran;
-import models.Tagihan;
 import models.Penghuni;
+import models.Tagihan;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PembayaranDAO {
+public class RiwayatPembayaranDAO {
     private final Connection conn;
 
-    public PembayaranDAO() {
+    public RiwayatPembayaranDAO() {
         conn = KoneksiDatabase.getConnection();
     }
 
-    public List<Pembayaran> getAllPembayaran() {
+    public List<Pembayaran> getRiwayatByPenghuni(int idPenghuni) {
         List<Pembayaran> list = new ArrayList<>();
+        
         String sql = "SELECT p.id_pembayaran, p.id_tagihan, p.tanggal_bayar, p.metode, p.jumlah_bayar, " +
                      "t.bulan, t.tahun, t.status AS status_tagihan, " +
                      "ph.id_penghuni, u.name " +
@@ -25,10 +28,14 @@ public class PembayaranDAO {
                      "JOIN tagihan t ON p.id_tagihan = t.id_tagihan " +
                      "JOIN penghuni ph ON t.id_penghuni = ph.id_penghuni " +
                      "JOIN users u ON ph.id_user = u.id " +
+                     "WHERE ph.id_penghuni = ? AND t.status = 'lunas' " +
                      "ORDER BY p.tanggal_bayar DESC";
+                     
         try {
             PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, idPenghuni);
             ResultSet rs = pst.executeQuery();
+            
             while (rs.next()) {
                 Pembayaran pay = new Pembayaran(
                     rs.getInt("id_pembayaran"),
@@ -43,7 +50,7 @@ public class PembayaranDAO {
                     rs.getInt("id_penghuni"),
                     rs.getString("bulan"),
                     rs.getInt("tahun"),
-                    null, 0, 0,
+                    null, 0, 0, 
                     rs.getString("status_tagihan")
                 );
 
@@ -56,35 +63,9 @@ public class PembayaranDAO {
             }
             rs.close();
             pst.close();
-        } catch (SQLException e) { 
-            e.printStackTrace(); 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
-    }
-
-    public boolean delete(int idPembayaran) {
-        String sql = "DELETE FROM pembayaran WHERE id_pembayaran = ?";
-        try {
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, idPembayaran);
-            boolean res = pst.executeUpdate() > 0;
-            pst.close();
-            return res;
-        } catch (SQLException e) { 
-            return false; 
-        }
-    }
-    
-    public boolean verifikasi(int idTagihan) {
-        String sql = "UPDATE tagihan SET status = 'lunas' WHERE id_tagihan = ?";
-        try {
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, idTagihan);
-            boolean res = pst.executeUpdate() > 0;
-            pst.close();
-            return res;
-        } catch (SQLException e) { 
-            return false; 
-        }
     }
 }

@@ -1,17 +1,23 @@
 package services;
 
+import dao.Penghuni.TagihanDAO;
 import interfaces.PembayaranService;
 
 public class PembayaranCash implements PembayaranService {
+    private final TagihanDAO dao = new TagihanDAO();
+
     @Override
-    public void prosesPembayaran() {
-        System.out.println("Pembayaran cash sedang diproses...");
-        System.out.println("Pembayaran cash berhasil.");
+    public String getNamaMetode() {
+        return "Tunai (Cash)";
     }
 
     @Override
-    public boolean validasiPembayaran() {
-        System.out.println("Memvalidasi pembayaran cash...");
-        return true;
+    public double hitungTotalBayar(double tagihanAwal) {
+        return tagihanAwal;
+    }
+
+    @Override
+    public boolean prosesPembayaran(int idTagihan, double tagihanAwal) {
+        return dao.bayarTagihan(idTagihan, getNamaMetode(), hitungTotalBayar(tagihanAwal));
     }
 }

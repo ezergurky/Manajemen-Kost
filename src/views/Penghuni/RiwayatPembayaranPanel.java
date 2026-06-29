@@ -7,6 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
+import controllers.Penghuni.RiwayatPembayaranController;
+
 public class RiwayatPembayaranPanel extends JPanel {
 
     private static final Color TEAL_PRIMARY = new Color(20, 184, 166);
@@ -20,10 +22,16 @@ public class RiwayatPembayaranPanel extends JPanel {
     private JTable tableRiwayat;
     private DefaultTableModel tableModel;
 
-    public RiwayatPembayaranPanel() {
+    private int idPenghuni;
+    private RiwayatPembayaranController controller;
+
+    public RiwayatPembayaranPanel(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+
+        this.controller = new RiwayatPembayaranController(this, this.idPenghuni);
     }
 
     private void initComponents() {
@@ -141,8 +149,6 @@ public class RiwayatPembayaranPanel extends JPanel {
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
 
-        loadDummyData();
-
         return tableContainer;
     }
 
@@ -181,8 +187,10 @@ public class RiwayatPembayaranPanel extends JPanel {
         return btn;
     }
 
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"PMB-001", "INV-2026-001", "01 Mei 2026", "Transfer Bank", "Rp 750.000"});
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.loadTable();
+        }
     }
 
     public JButton getBtnCetakKwitansi() { return btnCetakKwitansi; }

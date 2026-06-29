@@ -1,11 +1,15 @@
 package views.Penghuni;
 
+import controllers.Penghuni.TagihanController;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class TagihanPanel extends JPanel {
 
@@ -14,16 +18,23 @@ public class TagihanPanel extends JPanel {
     private static final Color BG_PANEL     = new Color(240, 244, 248);
     private static final Color TEXT_DARK    = new Color(15, 23, 42);
     private static final Color TEXT_MED     = new Color(71, 85, 105);
+    private static final Color TEXT_LIGHT   = new Color(148, 163, 184);
     private static final Color BORDER_COLOR = new Color(218, 225, 234);
+    private static final Color INPUT_BG     = new Color(249, 251, 253);
 
-    private JButton btnBayar, btnCetakInvoice;
+    private JTextField txtSearch;
+    private JButton btnBayar;
     private JTable tableTagihan;
     private DefaultTableModel tableModel;
+    private final int idPenghuni;
+    private TagihanController controller;
 
-    public TagihanPanel() {
+    public TagihanPanel(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+        this.controller = new TagihanController(this, idPenghuni);
     }
 
     private void initComponents() {
@@ -37,11 +48,11 @@ public class TagihanPanel extends JPanel {
         titleContainer.setOpaque(false);
         titleContainer.setLayout(new BoxLayout(titleContainer, BoxLayout.Y_AXIS));
 
-        JLabel titleLabel = new JLabel("Tagihan Saya");
+        JLabel titleLabel = new JLabel("Tagihan Sewa");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
         titleLabel.setForeground(TEXT_DARK);
 
-        JLabel subLabel = new JLabel("Lihat daftar seluruh kewajiban pembayaran sewa kamar dan biaya tambahan Anda");
+        JLabel subLabel = new JLabel("Lihat daftar tagihan bulanan Anda dan lakukan pembayaran");
         subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         subLabel.setForeground(TEXT_MED);
 
@@ -78,21 +89,61 @@ public class TagihanPanel extends JPanel {
         toolbar.setBackground(Color.WHITE);
         toolbar.setBorder(new EmptyBorder(20, 20, 16, 20));
 
-        JLabel lblSectionTitle = new JLabel("Daftar Invoice");
-        lblSectionTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        lblSectionTitle.setForeground(TEXT_DARK);
-        toolbar.add(lblSectionTitle, BorderLayout.WEST);
+        txtSearch = new JTextField("Cari invoice atau bulan...");
+        txtSearch.setPreferredSize(new Dimension(280, 40));
+        txtSearch.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        txtSearch.setBackground(INPUT_BG);
+        txtSearch.setForeground(TEXT_LIGHT);
+        txtSearch.setCaretColor(TEAL_PRIMARY);
+        txtSearch.setBorder(new CompoundBorder(
+                new LineBorder(BORDER_COLOR, 1, true),
+                new EmptyBorder(0, 12, 0, 12)
+        ));
+
+        txtSearch.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (txtSearch.getText().equals("Cari invoice atau bulan...")) {
+                    txtSearch.setText("");
+                    txtSearch.setForeground(TEXT_DARK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtSearch.getText().trim().isEmpty()) {
+                    txtSearch.setForeground(TEXT_LIGHT);
+                    txtSearch.setText("Cari invoice atau bulan...");
+                }
+            }
+        });
+
+        toolbar.add(txtSearch, BorderLayout.WEST);
 
         JPanel btnActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         btnActionPanel.setOpaque(false);
 
-        btnBayar = createStyledButton("Bayar Sekarang", TEAL_PRIMARY, TEAL_DARK, true);
-        btnCetakInvoice = createStyledButton("Cetak Invoice", Color.WHITE, new Color(240, 244, 248), false);
+        btnBayar = new JButton("Bayar Tagihan") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getModel().isRollover() ? TEAL_DARK : TEAL_PRIMARY);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
+                g2.dispose();
+                super.paintComponent(g);
+            }
+        };
+        btnBayar.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btnBayar.setForeground(Color.WHITE);
+        btnBayar.setPreferredSize(new Dimension(140, 40));
+        btnBayar.setOpaque(false);
+        btnBayar.setContentAreaFilled(false);
+        btnBayar.setBorderPainted(false);
+        btnBayar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btnActionPanel.add(btnBayar);
-        btnActionPanel.add(btnCetakInvoice);
-
         toolbar.add(btnActionPanel, BorderLayout.EAST);
+
         return toolbar;
     }
 
@@ -101,7 +152,7 @@ public class TagihanPanel extends JPanel {
         tableContainer.setBackground(Color.WHITE);
         tableContainer.setBorder(new EmptyBorder(0, 20, 20, 20));
 
-        String[] columns = {"No. Invoice", "Bulan / Tahun", "Jumlah Tagihan", "Denda", "Batas Waktu", "Status"};
+        String[] columns = {"No. Invoice", "Bulan", "Jatuh Tempo", "Tagihan Pokok", "Denda", "Total", "Status"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -126,76 +177,29 @@ public class TagihanPanel extends JPanel {
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-        
-        DefaultTableCellRenderer paddingRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                setBorder(new EmptyBorder(0, 12, 0, 12));
-                return this;
-            }
-        };
 
-        tableTagihan.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tableTagihan.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        tableTagihan.getColumnModel().getColumn(2).setCellRenderer(paddingRenderer);
-        tableTagihan.getColumnModel().getColumn(3).setCellRenderer(paddingRenderer);
-        tableTagihan.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-        tableTagihan.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+        for (int i = 0; i < tableTagihan.getColumnCount(); i++) {
+            if (i != 1 && i != 3 && i != 4 && i != 5) {
+                tableTagihan.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
 
         JScrollPane scrollPane = new JScrollPane(tableTagihan);
         scrollPane.setBorder(new LineBorder(BORDER_COLOR, 1));
         scrollPane.getViewport().setBackground(Color.WHITE);
 
         tableContainer.add(scrollPane, BorderLayout.CENTER);
-
-        loadDummyData();
-
         return tableContainer;
     }
 
-    private JButton createStyledButton(String text, Color bg, Color hoverBg, boolean isFilled) {
-        JButton btn = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                Color currentBg = getModel().isRollover() ? hoverBg : bg;
-                g2.setColor(currentBg);
-                
-                if (isFilled) {
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
-                } else {
-                    g2.setColor(Color.WHITE);
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 8, 8);
-                    g2.setColor(BORDER_COLOR);
-                    g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 8, 8);
-                }
-                g2.dispose();
-                super.paintComponent(g);
-            }
-        };
-
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        btn.setForeground(isFilled ? Color.WHITE : TEXT_MED);
-        btn.setPreferredSize(new Dimension(btn.getPreferredSize().width + 12, 40));
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(false);
-        btn.setFocusPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        return btn;
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.loadTable();
+        }
     }
 
-    private void loadDummyData() {
-        tableModel.addRow(new Object[]{"INV-2026-001", "Mei / 2026", "Rp 750.000", "Rp 0", "01 Jun 2026", "Lunas"});
-        tableModel.addRow(new Object[]{"INV-2026-002", "Juni / 2026", "Rp 750.000", "Rp 0", "01 Jul 2026", "Belum Bayar"});
-    }
-
+    public JTextField getTxtSearch() { return txtSearch; }
     public JButton getBtnBayar() { return btnBayar; }
-    public JButton getBtnCetakInvoice() { return btnCetakInvoice; }
     public JTable getTableTagihan() { return tableTagihan; }
     public DefaultTableModel getTableModel() { return tableModel; }
 }

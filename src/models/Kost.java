@@ -1,9 +1,13 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Kost {
     private int idKost;
     private String namaKost;
     private String alamat;
+    private List<Kamar> daftarKamar = new ArrayList<>();
 
     public Kost(int idKost, String namaKost, String alamat) {
         this.idKost = idKost;
@@ -31,7 +35,11 @@ public class Kost {
         return alamat;
     }
 
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
+    public void setDaftarKamar(List<Kamar> daftarKamar) {
+        this.daftarKamar = daftarKamar; 
+    }
+    
+    public List<Kamar> getDaftarKamar() { 
+        return daftarKamar; 
     }
 }

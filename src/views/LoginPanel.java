@@ -199,7 +199,7 @@ public class LoginPanel extends JFrame {
         cardInner.add(btnLogin);
         cy += 58;
 
-        JLabel footer = new JLabel("© 2025 Sistem Manajemen Kost");
+        JLabel footer = new JLabel("© 2026 Sistem Manajemen Kost");
         footer.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         footer.setForeground(TEXT_LIGHT);
         footer.setHorizontalAlignment(SwingConstants.CENTER);

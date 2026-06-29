@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 
+import controllers.Penghuni.ProfileController;
+
 public class ProfilePanel extends JPanel {
 
     private static final Color TEAL_PRIMARY = new Color(20, 184, 166);
@@ -14,10 +16,24 @@ public class ProfilePanel extends JPanel {
 
     private JLabel lblNamaLengkap, lblNik, lblTelepon, lblEmail, lblUsername, lblRole;
 
-    public ProfilePanel() {
+    private int idPenghuni;
+    private String namaUser = ""; 
+    private JPanel avatar;
+
+    public ProfilePanel(int idPenghuni) {
+        this.idPenghuni = idPenghuni;
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
+
+        new ProfileController(this, idPenghuni);
+    }
+
+    public void setNamaUser(String nama) {
+        this.namaUser = nama;
+        if (avatar != null) {
+            avatar.repaint();
+        }
     }
 
     private void initComponents() {
@@ -88,7 +104,16 @@ public class ProfilePanel extends JPanel {
                 g2.setColor(Color.WHITE);
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 28));
                 FontMetrics fm = g2.getFontMetrics();
+                
                 String init = "P";
+                if (namaUser != null && !namaUser.isEmpty()) {
+                    String[] parts = namaUser.split(" ");
+                    if (parts.length >= 2) {
+                        init = (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
+                    } else {
+                        init = namaUser.substring(0, 1).toUpperCase();
+                    }
+                }
                 g2.drawString(init,
                     (80 - fm.stringWidth(init)) / 2,
                     (80 + fm.getAscent() - fm.getDescent()) / 2);
@@ -143,7 +168,7 @@ public class ProfilePanel extends JPanel {
         rowPanel.add(lblValue, BorderLayout.CENTER);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
+        gbc.gridx = 0; 
         gbc.gridy = gridy;
         gbc.weightx = 1.0;
         gbc.fill = GridBagConstraints.HORIZONTAL;

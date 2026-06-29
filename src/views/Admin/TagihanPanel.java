@@ -27,13 +27,14 @@ public class TagihanPanel extends JPanel {
     private JButton btnBuatTagihan, btnKirimReminder, btnHapus;
     private JTable tableTagihan;
     private DefaultTableModel tableModel;
+    private TagihanController controller;
 
     public TagihanPanel() {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
         
-        new TagihanController(this);
+        this.controller = new TagihanController(this);
     }
 
     private void initComponents() {
@@ -88,7 +89,7 @@ public class TagihanPanel extends JPanel {
         toolbar.setBackground(Color.WHITE);
         toolbar.setBorder(new EmptyBorder(20, 20, 16, 20));
 
-        txtSearch = new JTextField("Cari nomor invoice atau nama...");
+        txtSearch = new JTextField("Cari invoice, nama penghuni atau kamar...");
         txtSearch.setPreferredSize(new Dimension(280, 40));
         txtSearch.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         txtSearch.setBackground(INPUT_BG);
@@ -102,7 +103,7 @@ public class TagihanPanel extends JPanel {
         txtSearch.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (txtSearch.getText().equals("Cari nomor invoice atau nama...")) {
+                if (txtSearch.getText().equals("Cari invoice, nama penghuni atau kamar...")) {
                     txtSearch.setText("");
                     txtSearch.setForeground(TEXT_DARK);
                 }
@@ -116,7 +117,7 @@ public class TagihanPanel extends JPanel {
             public void focusLost(FocusEvent e) {
                 if (txtSearch.getText().trim().isEmpty()) {
                     txtSearch.setForeground(TEXT_LIGHT);
-                    txtSearch.setText("Cari nomor invoice atau nama...");
+                    txtSearch.setText("Cari invoice, nama penghuni atau kamar...");
                 }
                 txtSearch.setBorder(new CompoundBorder(
                         new LineBorder(BORDER_COLOR, 1, true),
@@ -131,8 +132,8 @@ public class TagihanPanel extends JPanel {
         btnActionPanel.setOpaque(false);
 
         btnBuatTagihan = createStyledButton("Buat Tagihan", TEAL_PRIMARY, TEAL_DARK, true);
-        btnKirimReminder = createStyledButton("Kirim Pengingat", Color.WHITE, new Color(240, 244, 248), false);
-        btnHapus = createStyledButton("Batalkan", new Color(239, 68, 68), new Color(220, 38, 38), true);
+        btnKirimReminder = createStyledButton("Edit", Color.WHITE, new Color(240, 244, 248), false);
+        btnHapus = createStyledButton("Hapus", new Color(239, 68, 68), new Color(220, 38, 38), true);
 
         btnActionPanel.add(btnBuatTagihan);
         btnActionPanel.add(btnKirimReminder);
@@ -233,9 +234,15 @@ public class TagihanPanel extends JPanel {
         return btn;
     }
 
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.loadTable();
+        }
+    }
+
     public JTextField getTxtSearch() { return txtSearch; }
-    public JButton getBtnBuatTagihan() { return btnBuatTagihan; }
-    public JButton getBtnKirimReminder() { return btnKirimReminder; }
+    public JButton getBtnTambah() { return btnBuatTagihan; }
+    public JButton getBtnEdit() { return btnKirimReminder; }
     public JButton getBtnHapus() { return btnHapus; }
     public JTable getTableTagihan() { return tableTagihan; }
     public DefaultTableModel getTableModel() { return tableModel; }

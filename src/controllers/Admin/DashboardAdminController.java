@@ -21,7 +21,7 @@ public class DashboardAdminController {
         loadRecentActivities();
     }
 
-    private void loadStatistics() {
+    public void loadStatistics() {
         int[] kamarStats = dao.getKamarStats();
         int totalKamar = kamarStats[0];
         int terisi = kamarStats[1];
@@ -39,7 +39,7 @@ public class DashboardAdminController {
         view.getLblPendapatanFooter().setText("Bulan ini");
     }
 
-    private void loadRecentActivities() {
+    public void loadRecentActivities() {
         DefaultTableModel model = view.getTableModel();
         model.setRowCount(0);
 

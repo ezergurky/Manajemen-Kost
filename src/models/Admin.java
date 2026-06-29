@@ -1,31 +1,21 @@
 package models;
 
+import views.MainFrameAdmin;
+
 public class Admin extends User {
-    private String level;
+    private String role;
 
-    public Admin(int id, String nama, String email, String password, String level) {
-        super(id, nama, email, password);
-        this.level = level;
+    public Admin(int id, String nama, String email, String password, String username) {
+        super(id, nama, email, password, username);
+        this.role = "admin";
     }
 
-    public String getLevel() {
-        return level;
-    }
-
-    public void kelolaKamar() {
-        System.out.println("Mengelola data kamar...");
-    }
-
-    public void kelolaPenghuni() {
-        System.out.println("Mengelola data penghuni...");
-    }
-
-    public void generateLaporan() {
-        System.out.println("Membuat laporan keuangan...");
+    public String getRole() {
+        return role;
     }
 
     @Override
     public void displayDashboard() {
-        System.out.println("Dashboard Admin");
+        new MainFrameAdmin().setVisible(true);
     }
 }

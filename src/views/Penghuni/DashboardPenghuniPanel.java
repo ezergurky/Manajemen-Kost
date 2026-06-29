@@ -25,6 +25,7 @@ public class DashboardPenghuniPanel extends JPanel {
     private JLabel lblStatusValue, lblStatusFooter;
 
     private int idPenghuni;
+    private DashboardPenghuniController controller;
 
     public DashboardPenghuniPanel(int idPenghuni) {
         this.idPenghuni = idPenghuni;
@@ -32,7 +33,7 @@ public class DashboardPenghuniPanel extends JPanel {
         setBackground(BG_PANEL);
         initComponents();
 
-        new DashboardPenghuniController(this, this.idPenghuni);
+        this.controller = new DashboardPenghuniController(this, this.idPenghuni);
     }
 
     private void initComponents() {
@@ -216,6 +217,13 @@ public class DashboardPenghuniPanel extends JPanel {
         container.add(scrollPane, BorderLayout.CENTER);
 
         return container;
+    }
+
+    public void refreshData() {
+        if (this.controller != null) {
+            this.controller.loadStatistics();
+            this.controller.loadRecentActivities();
+        }
     }
 
     public JTable getTableRiwayatSaya() { return tableRiwayatSaya; }

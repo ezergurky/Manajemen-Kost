@@ -23,22 +23,6 @@ public class Kamar {
         this.status = status;
     }
 
-    public void updateStatus(String status) {
-        if (status.equalsIgnoreCase("tersedia") || status.equalsIgnoreCase("terisi")) {
-            this.status = status;
-        } else {
-            throw new IllegalArgumentException("Status kamar tidak valid!");
-        }
-    }
-
-    public void updateStatus(boolean terisi) {
-        if (terisi) {
-            this.status = "terisi";
-        } else {
-            this.status = "tersedia";
-        }
-    }
-
     public int getIdKamar() {
         return idKamar;
     }

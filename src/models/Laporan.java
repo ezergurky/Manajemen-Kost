@@ -10,42 +10,25 @@ public class Laporan {
         this.dataPembayaran = dataPembayaran;
     }
 
-    public List<Pembayaran> getDataPembayaran() {
-        return dataPembayaran;
-    }
-
-    public void setDataPembayaran(List<Pembayaran> dataPembayaran) {
-        this.dataPembayaran = dataPembayaran;
-    }
-
-    public void generateBulanan() {
-        System.out.println("Membuat laporan bulanan...");
-
-        double totalPendapatan = 0;
-
-        for (Pembayaran pembayaran : dataPembayaran) {
-            totalPendapatan += pembayaran.getJumlahBayar();
+    public double generateLaporanPendapatan(String bulan, String tahun) {
+        double total = 0;
+        for (Pembayaran p : dataPembayaran) {
+            boolean matchBulan = bulan.equals("Semua Bulan") || p.getTagihan().getBulan().equalsIgnoreCase(bulan);
+            boolean matchTahun = tahun.equals("Semua Tahun") || String.valueOf(p.getTagihan().getTahun()).equals(tahun);
+            boolean matchStatus = p.getTagihan().getStatus().equalsIgnoreCase("lunas");
+            
+            if (matchBulan && matchTahun && matchStatus) {
+                total += p.getJumlahBayar();
+            }
         }
-
-        System.out.println("Total Pendapatan Bulanan : Rp" + totalPendapatan);
+        return total;
     }
 
-    public void generateTahunan() {
-        System.out.println("Membuat laporan tahunan...");
-
-        double totalPendapatan = 0;
-
-        for (Pembayaran pembayaran : dataPembayaran) {
-            totalPendapatan += pembayaran.getJumlahBayar();
-        }
-
-        System.out.println("Total Pendapatan Tahunan : Rp" + totalPendapatan);
+    int getTotalTransaksi() {
+        return dataPembayaran.size();
     }
 
-    @Override
-    public String toString() {
-        return "Laporan{" +
-                "jumlahDataPembayaran=" + dataPembayaran.size() +
-                '}';
+    public void cetakLogTransaksi() {
+        System.out.println("System Log: Mengkalkulasi laporan dari total " + getTotalTransaksi() + " transaksi pembayaran.");
     }
 }

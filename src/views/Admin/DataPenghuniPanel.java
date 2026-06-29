@@ -24,16 +24,18 @@ public class DataPenghuniPanel extends JPanel {
     private static final Color INPUT_BG     = new Color(249, 251, 253);
 
     private JTextField txtSearch;
-    private JButton btnTambah, btnEdit, btnHapus;
+    private JButton btnTambah, btnEdit, btnHapus, btnAturKamar;
     private JTable tablePenghuni;
     private DefaultTableModel tableModel;
+
+    private PenghuniController controller;
 
     public DataPenghuniPanel() {
         setLayout(new BorderLayout());
         setBackground(BG_PANEL);
         initComponents();
         
-        new PenghuniController(this);
+        controller = new PenghuniController(this);
     }
 
     private void initComponents() {
@@ -130,17 +132,19 @@ public class DataPenghuniPanel extends JPanel {
         JPanel btnActionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         btnActionPanel.setOpaque(false);
 
+        btnAturKamar = createStyledButton("Buat Kontrak", new Color(59, 130, 246), new Color(37, 99, 235), true);
         btnTambah = createStyledButton("Tambah Penghuni", TEAL_PRIMARY, TEAL_DARK, true);
         btnEdit = createStyledButton("Edit", Color.WHITE, new Color(240, 244, 248), false);
         btnHapus = createStyledButton("Hapus", new Color(239, 68, 68), new Color(220, 38, 38), true);
 
+        btnActionPanel.add(btnAturKamar);
         btnActionPanel.add(btnTambah);
         btnActionPanel.add(btnEdit);
         btnActionPanel.add(btnHapus);
 
         toolbar.add(btnActionPanel, BorderLayout.EAST);
         return toolbar;
-    }
+    } 
 
     private JPanel createTablePanel() {
         JPanel tableContainer = new JPanel(new BorderLayout());
@@ -233,7 +237,14 @@ public class DataPenghuniPanel extends JPanel {
         return btn;
     }
 
+    public void refreshData() {
+        if(this.controller != null) {
+            this.controller.loadTable();
+        }
+    }
+ 
     public JTextField getTxtSearch() { return txtSearch; }
+    public JButton getBtnAturKamar() { return btnAturKamar; }
     public JButton getBtnTambah() { return btnTambah; }
     public JButton getBtnEdit() { return btnEdit; }
     public JButton getBtnHapus() { return btnHapus; }

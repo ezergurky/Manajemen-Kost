@@ -11,6 +11,13 @@ public class MainFrameAdmin extends JFrame {
     private CardLayout cardLayout;
     private JPanel contentPanel;
 
+    private DashboardAdminPanel dashAdmin;
+    private DataKamarPanel dataKamarPanel;
+    private DataPenghuniPanel dataPenghuniPanel;
+    private LaporanPanel laporanPanel;
+    private PembayaranPanel pembPanel;
+    private TagihanPanel tagPanel;
+
     public MainFrameAdmin() {
         setTitle("Manajemen Kost — Admin");
         setSize(1200, 700);
@@ -30,13 +37,20 @@ public class MainFrameAdmin extends JFrame {
 
         cardLayout   = new CardLayout();
         contentPanel = new JPanel(cardLayout);
-
-        contentPanel.add(new DashboardAdminPanel(), "DASH");
-        contentPanel.add(new DataKamarPanel(),      "ROOM");
-        contentPanel.add(new DataPenghuniPanel(), "TENANT");
-        contentPanel.add(new TagihanPanel(),      "BILL");
-        contentPanel.add(new PembayaranPanel(), "PAY");
-        contentPanel.add(new LaporanPanel(), "REPORT");
+        dashAdmin = new DashboardAdminPanel();
+        dataKamarPanel = new DataKamarPanel();
+        dataPenghuniPanel = new DataPenghuniPanel();
+        tagPanel = new TagihanPanel();
+        pembPanel = new PembayaranPanel();
+        laporanPanel = new LaporanPanel();
+ 
+        contentPanel.add(dashAdmin, "DASH");
+        contentPanel.add(dataKamarPanel,      "ROOM");
+        contentPanel.add(dataPenghuniPanel, "TENANT");
+        contentPanel.add(tagPanel,      "BILL");
+        contentPanel.add(pembPanel, "PAY");
+        contentPanel.add(laporanPanel, "REPORT");
+        contentPanel.add(new PengaturanPanel("Admin"), "SETTINGS");
 
         root.add(contentPanel, BorderLayout.CENTER);
         setContentPane(root);
@@ -44,15 +58,26 @@ public class MainFrameAdmin extends JFrame {
         navigateTo("DASH");
     }
 
-    public void navigateTo(String key) {
-        cardLayout.show(contentPanel, key);
-    }
+    public void navigateTo(String key) { 
+        if (key.equals("LOGOUT")) {
+            models.Admin admin = new models.Admin(0, "Admin", "", "", "");
+            admin.logout(this); 
+        } else {
+            if(key.equals("DASH") && dashAdmin != null) {
+                dashAdmin.refreshData();
+            } else if (key.equals("ROOM") && dataKamarPanel != null) {
+                dataKamarPanel.refreshData();
+            } else if (key.equals("TENANT") && dataPenghuniPanel != null) {
+                dataPenghuniPanel.refreshData();
+            } else if (key.equals("REPORT") && laporanPanel != null) {
+                laporanPanel.refreshData();
+            } else if (key.equals("PAY") && pembPanel != null) {
+                pembPanel.refreshData();
+            } else if (key.equals("BILL") && tagPanel != null) {
+                tagPanel.refreshData();
+            }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-            catch (Exception ignored) {}
-            new MainFrameAdmin();
-        });
+            cardLayout.show(contentPanel, key);
+        }
     }
 }

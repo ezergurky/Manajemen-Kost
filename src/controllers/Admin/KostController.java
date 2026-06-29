@@ -29,7 +29,7 @@ public class KostController {
         for (Kost kost : listData) {
             Object[] row = {
                 "KST-" + String.format("%03d", kost.getIdKost()), 
-                kost.getNamaKost(), 
+                kost.getNamaKost() + " (" + kost.getDaftarKamar().size() + " Kamar)",
                 kost.getAlamat()
             };
             model.addRow(row);
